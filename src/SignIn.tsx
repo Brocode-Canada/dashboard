@@ -12,6 +12,8 @@ const SignIn: React.FC = () => {
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
+  console.log('SignIn component rendered:', { user, loading, error });
+
   React.useEffect(() => {
     if (!loading && user) {
       navigate('/overview');

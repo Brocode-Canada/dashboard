@@ -32,15 +32,29 @@ if (missingVars.length > 0) {
   console.error('Please create a .env.local file with your Firebase configuration.');
   console.error('You can copy from env.example and fill in your values.');
   
-  // Show error on page for production builds
-  if (import.meta.env.PROD) {
-    document.body.innerHTML = `
-      <div style="padding: 20px; font-family: Arial, sans-serif; text-align: center;">
-        <h1 style="color: #dc2626;">Configuration Error</h1>
-        <p>Firebase configuration is missing. Please check the deployment logs.</p>
-        <p>Missing variables: ${missingVars.join(', ')}</p>
-      </div>
-    `;
+  // Show error on page for both development and production
+  const errorMessage = `
+    <div style="padding: 20px; font-family: Arial, sans-serif; text-align: center; background: #fef2f2; border: 2px solid #dc2626; border-radius: 8px; margin: 20px;">
+      <h1 style="color: #dc2626;">🔥 Firebase Configuration Error</h1>
+      <p><strong>Missing environment variables:</strong> ${missingVars.join(', ')}</p>
+      <p>To fix this:</p>
+      <ol style="text-align: left; max-width: 500px; margin: 0 auto;">
+        <li>Copy <code>env.example</code> to <code>.env.local</code></li>
+        <li>Fill in your Firebase project configuration values</li>
+        <li>Restart the development server</li>
+      </ol>
+      <p style="margin-top: 20px; font-size: 14px; color: #666;">
+        You can find these values in your Firebase Console > Project Settings > General > Your apps > Web app
+      </p>
+    </div>
+  `;
+  
+  // Insert error message into the page
+  const rootElement = document.getElementById('root');
+  if (rootElement) {
+    rootElement.innerHTML = errorMessage;
+  } else {
+    document.body.innerHTML = errorMessage;
   }
 }
 

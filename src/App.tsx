@@ -356,6 +356,7 @@ function Navigation() {
 
 // Page Components
 const OverviewPage = () => {
+  console.log('🚀 OverviewPage component loaded');
   const { data, loading, error } = useDashboardData();
   
   if (loading) {
@@ -1504,6 +1505,8 @@ const RequireAuth = ({ allowedRoles }: { allowedRoles: UserRole[] }) => {
 };
 
 function DashboardRoutes() {
+  console.log('🚀 DashboardRoutes component loaded');
+  
   return (
     <Routes>
       {/* Public pages - accessible to everyone */}
@@ -1533,7 +1536,8 @@ function DashboardRoutes() {
 }
 
 function AppRoutes() {
-  console.log('AppRoutes component loaded');
+  console.log('🚀 AppRoutes component loaded');
+  console.log('🚀 AppRoutes: Current location:', window.location.href);
   
   return (
     <DarkModeProvider>

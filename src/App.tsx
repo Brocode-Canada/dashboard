@@ -1456,7 +1456,42 @@ const AnalyticsPage = () => {
 // Role-based route protection
 const RequireAuth = ({ allowedRoles }: { allowedRoles: UserRole[] }) => {
   const { user, role, loading } = useAuth();
-  if (loading) return <div>Loading...</div>;
+  if (loading) return (
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      minHeight: '100vh',
+      width: '100vw',
+      background: 'linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%)',
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      zIndex: 9999
+    }}>
+      <div style={{
+        width: '60px',
+        height: '60px',
+        border: '6px solid #fecaca',
+        borderTop: '6px solid #dc2626',
+        borderRadius: '50%',
+        animation: 'spin 1s linear infinite',
+        marginBottom: '2rem'
+      }}></div>
+      <p style={{
+        color: '#dc2626',
+        fontSize: '1.2rem',
+        fontWeight: '600',
+        margin: 0,
+        textAlign: 'center'
+      }}>
+        Loading BroCode Canada Dashboard...
+      </p>
+    </div>
+  );
   if (!user && allowedRoles.includes('user')) return <Outlet />;
   if (!user) return <Navigate to="/signin" replace />;
   if (!allowedRoles.includes(role)) return <Navigate to="/overview" replace />;

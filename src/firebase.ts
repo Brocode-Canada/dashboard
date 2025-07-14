@@ -31,6 +31,17 @@ if (missingVars.length > 0) {
   console.error('Missing Firebase environment variables:', missingVars);
   console.error('Please create a .env.local file with your Firebase configuration.');
   console.error('You can copy from env.example and fill in your values.');
+  
+  // Show error on page for production builds
+  if (import.meta.env.PROD) {
+    document.body.innerHTML = `
+      <div style="padding: 20px; font-family: Arial, sans-serif; text-align: center;">
+        <h1 style="color: #dc2626;">Configuration Error</h1>
+        <p>Firebase configuration is missing. Please check the deployment logs.</p>
+        <p>Missing variables: ${missingVars.join(', ')}</p>
+      </div>
+    `;
+  }
 }
 
 // Initialize Firebase

@@ -24,30 +24,44 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [role, setRole] = useState<UserRole>('user');
   const [loading, setLoading] = useState(true);
 
+  console.log('🚀 AuthProvider: Component initialized, loading:', loading);
+
   useEffect(() => {
+    console.log('🚀 AuthProvider: Setting up auth state listener...');
+    
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      console.log('🚀 AuthProvider: Auth state changed, user:', firebaseUser ? 'exists' : 'null');
       setUser(firebaseUser);
       
       if (firebaseUser) {
         try {
+          console.log('🚀 AuthProvider: Fetching user data from Firestore...');
           // Fetch user data from Firestore
           const userDataFromFirestore = await firebaseService.getUserById(firebaseUser.uid);
           if (userDataFromFirestore) {
+            console.log('🚀 AuthProvider: User data fetched, role:', userDataFromFirestore.role);
             setUserData(userDataFromFirestore);
             setRole(userDataFromFirestore.role as UserRole);
+          } else {
+            console.log('🚀 AuthProvider: No user data found in Firestore');
           }
         } catch (error) {
-          console.error('Error fetching user data:', error);
+          console.error('❌ AuthProvider: Error fetching user data:', error);
         }
       } else {
+        console.log('🚀 AuthProvider: No user, resetting user data and role');
         setUserData(null);
         setRole('user');
       }
       
+      console.log('🚀 AuthProvider: Setting loading to false');
       setLoading(false);
     });
 
-    return () => unsubscribe();
+    return () => {
+      console.log('🚀 AuthProvider: Cleaning up auth state listener');
+      unsubscribe();
+    };
   }, []);
 
   const login = async (email: string, password: string) => {

@@ -63,11 +63,23 @@ A comprehensive admin dashboard for managing BroCode Canada members, built with 
 - `npm run build` - Build for production
 - `npm run preview` - Preview production build
 - `npm run lint` - Run ESLint
-- `npm run deploy` - Deploy to GitHub Pages
+- `npm run build` - Build for production
 
 ## Deployment
 
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions to GitHub Pages.
+The app is automatically deployed to GitHub Pages when you push to the `main` branch. The GitHub Actions workflow will:
+
+1. Build the project with your Firebase environment variables
+2. Deploy to GitHub Pages at `https://yourusername.github.io/dashboard/`
+
+Make sure you have set up the following GitHub repository secrets:
+- `VITE_FIREBASE_API_KEY`
+- `VITE_FIREBASE_AUTH_DOMAIN`
+- `VITE_FIREBASE_PROJECT_ID`
+- `VITE_FIREBASE_STORAGE_BUCKET`
+- `VITE_FIREBASE_MESSAGING_SENDER_ID`
+- `VITE_FIREBASE_APP_ID`
+- `VITE_FIREBASE_MEASUREMENT_ID`
 
 ## Project Structure
 

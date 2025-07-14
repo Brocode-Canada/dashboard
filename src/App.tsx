@@ -72,6 +72,18 @@ const TestPage = () => {
   );
 };
 
+// Simple fallback component
+const FallbackPage = () => {
+  console.log('🚀 FallbackPage: Component rendered');
+  return (
+    <div style={{ padding: '2rem', textAlign: 'center' }}>
+      <h1>🔄 Fallback Page</h1>
+      <p>This is a fallback component to test rendering.</p>
+      <p>Current pathname: {window.location.pathname}</p>
+    </div>
+  );
+};
+
 // Custom hook to manage dashboard data and operations
 function useDashboardData() {
   console.log('🚀 useDashboardData: Hook initialized');
@@ -1703,6 +1715,9 @@ function DashboardRoutes() {
       
       {/* Default redirect */}
       <Route path="" element={<Navigate to="/overview" replace />} />
+      
+      {/* Fallback route for debugging */}
+      <Route path="*" element={<FallbackPage />} />
     </Routes>
   );
 }
@@ -1711,19 +1726,35 @@ function AppRoutes() {
   console.log('🚀 AppRoutes component loaded');
   console.log('🚀 AppRoutes: Current location:', window.location.href);
   
-  return (
-    <DarkModeProvider>
-      <Router>
-        <Routes>
-          <Route path="/signin" element={<SignIn />} />
-          {/* Dashboard routes - public access for analytics, protected for admin features */}
-          <Route path="/*" element={<DashboardRoutes />} />
-          <Route path="/" element={<Navigate to="/overview" replace />} />
-          <Route path="*" element={<Navigate to="/overview" replace />} />
-        </Routes>
-      </Router>
-    </DarkModeProvider>
-  );
+  // Add error boundary debugging
+  const handleError = (error: Error, errorInfo: any) => {
+    console.error('❌ AppRoutes: Error caught:', error);
+    console.error('❌ AppRoutes: Error info:', errorInfo);
+  };
+  
+  try {
+    return (
+      <DarkModeProvider>
+        <Router>
+          <Routes>
+            <Route path="/signin" element={<SignIn />} />
+            {/* Dashboard routes - public access for analytics, protected for admin features */}
+            <Route path="/*" element={<DashboardRoutes />} />
+            <Route path="/" element={<Navigate to="/overview" replace />} />
+            <Route path="*" element={<Navigate to="/overview" replace />} />
+          </Routes>
+        </Router>
+      </DarkModeProvider>
+    );
+  } catch (error) {
+    console.error('❌ AppRoutes: Error in render:', error);
+    return (
+      <div style={{ padding: '2rem', textAlign: 'center' }}>
+        <h1>🚨 Error in AppRoutes</h1>
+        <p>Error: {error instanceof Error ? error.message : 'Unknown error'}</p>
+      </div>
+    );
+  }
 }
 
 export default AppRoutes;

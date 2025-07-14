@@ -64,6 +64,7 @@ function getUnique(arr: string[]) {
 function useDashboardData() {
   console.log('🚀 useDashboardData: Hook initialized');
   
+  const { user } = useAuth(); // Get the current user from auth context
   const [data, setData] = useState<Record<string, string | number>[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -102,6 +103,16 @@ function useDashboardData() {
   });
 
   useEffect(() => {
+    console.log('🚀 useDashboardData: useEffect triggered, user:', user ? 'authenticated' : 'not authenticated');
+    
+    if (!user) {
+      console.log('🚀 useDashboardData: No user, setting empty data and showing auth message');
+      setData([]);
+      setLoading(false);
+      setError('You must be signed in to view member data. Please sign in to access the dashboard.');
+      return;
+    }
+
     setLoading(true);
     setError(null);
     
@@ -133,7 +144,7 @@ function useDashboardData() {
       console.log('🚀 useDashboardData: Cleaning up Firestore listener');
       unsubscribe();
     };
-  }, []);
+  }, [user]); // Add user as dependency
 
   // CRUD Functions
   const addMember = async (memberData: Record<string, string>) => {
@@ -435,33 +446,31 @@ const OverviewPage = () => {
             padding: '2rem',
             maxWidth: '500px'
           }}>
-            <h2 style={{ color: '#dc2626', marginBottom: '1rem' }}>⚠️ Data Access Issue</h2>
+            <h2 style={{ color: '#dc2626', marginBottom: '1rem' }}>🔐 Authentication Required</h2>
             <p style={{ color: '#6b7280', marginBottom: '1.5rem' }}>{error}</p>
-            {error.includes('authentication') && (
-              <div>
-                <p style={{ color: '#6b7280', marginBottom: '1rem' }}>
-                  To view member data and analytics, please sign in with your admin credentials.
-                </p>
-                <button 
-                  onClick={() => window.location.href = '/dashboard/signin'}
-                  style={{
-                    background: '#dc2626',
-                    color: 'white',
-                    border: 'none',
-                    padding: '0.75rem 1.5rem',
-                    borderRadius: '8px',
-                    fontSize: '1rem',
-                    fontWeight: '600',
-                    cursor: 'pointer',
-                    transition: 'background-color 0.2s'
-                  }}
-                  onMouseOver={(e) => e.currentTarget.style.background = '#b91c1c'}
-                  onMouseOut={(e) => e.currentTarget.style.background = '#dc2626'}
-                >
-                  Sign In
-                </button>
-              </div>
-            )}
+            <div>
+              <p style={{ color: '#6b7280', marginBottom: '1rem' }}>
+                To view member data and analytics, please sign in with your admin credentials.
+              </p>
+              <button 
+                onClick={() => window.location.href = '/dashboard/signin'}
+                style={{
+                  background: '#dc2626',
+                  color: 'white',
+                  border: 'none',
+                  padding: '0.75rem 1.5rem',
+                  borderRadius: '8px',
+                  fontSize: '1rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.2s'
+                }}
+                onMouseOver={(e) => e.currentTarget.style.background = '#b91c1c'}
+                onMouseOut={(e) => e.currentTarget.style.background = '#dc2626'}
+              >
+                Sign In to Dashboard
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -623,33 +632,31 @@ const DemographicsPage = () => {
             padding: '2rem',
             maxWidth: '500px'
           }}>
-            <h2 style={{ color: '#dc2626', marginBottom: '1rem' }}>⚠️ Data Access Issue</h2>
+            <h2 style={{ color: '#dc2626', marginBottom: '1rem' }}>🔐 Authentication Required</h2>
             <p style={{ color: '#6b7280', marginBottom: '1.5rem' }}>{error}</p>
-            {error.includes('authentication') && (
-              <div>
-                <p style={{ color: '#6b7280', marginBottom: '1rem' }}>
-                  To view member data and analytics, please sign in with your admin credentials.
-                </p>
-                <button 
-                  onClick={() => window.location.href = '/dashboard/signin'}
-                  style={{
-                    background: '#dc2626',
-                    color: 'white',
-                    border: 'none',
-                    padding: '0.75rem 1.5rem',
-                    borderRadius: '8px',
-                    fontSize: '1rem',
-                    fontWeight: '600',
-                    cursor: 'pointer',
-                    transition: 'background-color 0.2s'
-                  }}
-                  onMouseOver={(e) => e.currentTarget.style.background = '#b91c1c'}
-                  onMouseOut={(e) => e.currentTarget.style.background = '#dc2626'}
-                >
-                  Sign In
-                </button>
-              </div>
-            )}
+            <div>
+              <p style={{ color: '#6b7280', marginBottom: '1rem' }}>
+                To view member data and analytics, please sign in with your admin credentials.
+              </p>
+              <button 
+                onClick={() => window.location.href = '/dashboard/signin'}
+                style={{
+                  background: '#dc2626',
+                  color: 'white',
+                  border: 'none',
+                  padding: '0.75rem 1.5rem',
+                  borderRadius: '8px',
+                  fontSize: '1rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.2s'
+                }}
+                onMouseOver={(e) => e.currentTarget.style.background = '#b91c1c'}
+                onMouseOut={(e) => e.currentTarget.style.background = '#dc2626'}
+              >
+                Sign In to Dashboard
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -776,9 +783,51 @@ const GeographyPage = () => {
 
   if (error) {
     return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>
-        <p style={{ color: 'red' }}>{error}</p>
+      <div className="page">
+        <Navigation />
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '60vh',
+          textAlign: 'center',
+          padding: '2rem'
+        }}>
+          <div style={{
+            background: '#fef2f2',
+            border: '2px solid #dc2626',
+            borderRadius: '12px',
+            padding: '2rem',
+            maxWidth: '500px'
+          }}>
+            <h2 style={{ color: '#dc2626', marginBottom: '1rem' }}>🔐 Authentication Required</h2>
+            <p style={{ color: '#6b7280', marginBottom: '1.5rem' }}>{error}</p>
+            <div>
+              <p style={{ color: '#6b7280', marginBottom: '1rem' }}>
+                To view member data and analytics, please sign in with your admin credentials.
+              </p>
+              <button 
+                onClick={() => window.location.href = '/dashboard/signin'}
+                style={{
+                  background: '#dc2626',
+                  color: 'white',
+                  border: 'none',
+                  padding: '0.75rem 1.5rem',
+                  borderRadius: '8px',
+                  fontSize: '1rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.2s'
+                }}
+                onMouseOver={(e) => e.currentTarget.style.background = '#b91c1c'}
+                onMouseOut={(e) => e.currentTarget.style.background = '#dc2626'}
+              >
+                Sign In to Dashboard
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

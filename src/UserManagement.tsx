@@ -87,8 +87,15 @@ const statusOptions = [
 const UserManagement: React.FC = () => {
   const { user: currentUser, role: currentRole } = useAuth();
   const navigate = useNavigate();
-  // Cast currentRole to include superadmin
-  const userRole = currentRole as 'superadmin' | 'admin' | 'moderator' | 'user';
+  // Use the role directly since it's already properly typed
+  const userRole = currentRole;
+  
+  // Helper function to check if user can delete another user
+  const canDeleteUser = (targetRole: string, currentRole: string) => {
+    if (targetRole === 'superadmin') return currentRole === 'superadmin';
+    if (targetRole === 'admin') return currentRole === 'superadmin' || currentRole === 'admin';
+    return true; // Can delete regular users and moderators
+  };
   const [users, setUsers] = useState<FirebaseUserData[]>([]);
   const [loading, setLoading] = useState(true);
   const [createModalVisible, setCreateModalVisible] = useState(false);
@@ -117,8 +124,8 @@ const UserManagement: React.FC = () => {
 
   const handleRoleChange = async (uid: string, newRole: string) => {
     try {
-      await firebaseService.updateUser(uid, { role: newRole as any });
-      setUsers(users => users.map(u => u.uid === uid ? { ...u, role: newRole as any } : u));
+      await firebaseService.updateUser(uid, { role: newRole as 'superadmin' | 'admin' | 'moderator' | 'user' });
+      setUsers(users => users.map(u => u.uid === uid ? { ...u, role: newRole as 'superadmin' | 'admin' | 'moderator' | 'user' } : u));
       message.success('Role updated successfully');
     } catch (error) {
       console.error('Failed to update role:', error);
@@ -128,8 +135,8 @@ const UserManagement: React.FC = () => {
 
   const handleStatusChange = async (uid: string, newStatus: string) => {
     try {
-      await firebaseService.updateUser(uid, { status: newStatus as any });
-      setUsers(users => users.map(u => u.uid === uid ? { ...u, status: newStatus as any } : u));
+      await firebaseService.updateUser(uid, { status: newStatus as 'active' | 'inactive' | 'suspended' });
+      setUsers(users => users.map(u => u.uid === uid ? { ...u, status: newStatus as 'active' | 'inactive' | 'suspended' } : u));
       message.success('Status updated successfully');
     } catch (error) {
       console.error('Failed to update status:', error);
@@ -334,18 +341,16 @@ const UserManagement: React.FC = () => {
             cancelText="No"
             disabled={
               record.uid === currentUser?.uid ||
-              (record.role === 'superadmin' && userRole !== 'superadmin') ||
-              (record.role === 'admin' && userRole !== 'superadmin')
+              !canDeleteUser(record.role, userRole)
             }
           >
             <Button
               danger
               icon={<DeleteOutlined />}
-              disabled={
-                record.uid === currentUser?.uid ||
-                (record.role === 'superadmin' && userRole !== 'superadmin') ||
-                (record.role === 'admin' && userRole !== 'superadmin')
-              }
+                              disabled={
+                  record.uid === currentUser?.uid ||
+                  !canDeleteUser(record.role, userRole)
+                }
               size="small"
               title={
                 record.uid === currentUser?.uid

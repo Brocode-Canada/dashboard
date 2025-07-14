@@ -581,9 +581,9 @@ const DemographicsPage = () => {
                 outerRadius={100} 
                 label={({ name, percent }: { name: string; percent?: number }) => `${name} ${((percent || 0) * 100).toFixed(0)}%`}
               >
-                {ageGroupCounts.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
+                              {ageGroupCounts.map((_, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
               </Pie>
               <Tooltip formatter={(value) => [value, 'Members']} />
             </PieChart>
@@ -776,7 +776,7 @@ const EmploymentPage = () => {
               outerRadius={150} 
               label={({ name, percent }: { name: string; percent?: number }) => `${name} ${((percent || 0) * 100).toFixed(0)}%`}
             >
-              {employmentData.map((entry, index) => (
+              {employmentData.map((_, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
@@ -1382,7 +1382,7 @@ const AnalyticsPage = () => {
                 outerRadius={100} 
                 label={({ name, percent }: { name: string; percent?: number }) => `${name} ${((percent || 0) * 100).toFixed(0)}%`}
               >
-                {ageGroupCounts.map((entry, index) => (
+                {ageGroupCounts.map((_, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>

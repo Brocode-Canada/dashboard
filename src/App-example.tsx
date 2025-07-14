@@ -1,4 +1,4 @@
-import React from 'react';
+// This is an example file - not used in production
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Card, Descriptions, Button, message, Tag } from 'antd';
-import { ArrowLeftOutlined, UserOutlined, MailOutlined, PhoneOutlined, EnvironmentOutlined, CalendarOutlined, BankOutlined, TeamOutlined } from '@ant-design/icons';
+import { UserOutlined, MailOutlined, PhoneOutlined, EnvironmentOutlined, CalendarOutlined, BankOutlined, TeamOutlined } from '@ant-design/icons';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from './firebase';
 import { useAuth } from './AuthContext';

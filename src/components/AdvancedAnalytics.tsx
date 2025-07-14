@@ -3,8 +3,19 @@ import { useAuth } from '../AuthContext';
 
 export const AdvancedAnalytics: React.FC = () => {
   const { role } = useAuth();
-  const isAdmin = role === 'admin' || role === 'director';
-  const [analyticsData, setAnalyticsData] = useState({
+  const isAdmin = role === 'admin' || role === 'superadmin';
+  const [analyticsData, setAnalyticsData] = useState<{
+    totalUsers: number;
+    activeUsers: number;
+    newUsersThisMonth: number;
+    userGrowth: number;
+    topPerformingPages: Array<{ name: string; views: number; growth: number }>;
+    systemHealth: {
+      cpu: number;
+      memory: number;
+      storage: number;
+    };
+  }>({
     totalUsers: 0,
     activeUsers: 0,
     newUsersThisMonth: 0,
@@ -30,7 +41,7 @@ export const AdvancedAnalytics: React.FC = () => {
           { name: 'User Management', views: 1890, growth: 15.7 },
           { name: 'Analytics', views: 1456, growth: 22.1 },
           { name: 'Content Management', views: 1234, growth: 5.3 }
-        ],
+        ] as Array<{ name: string; views: number; growth: number }>,
         systemHealth: {
           cpu: 45,
           memory: 62,

@@ -62,6 +62,8 @@ function getUnique(arr: string[]) {
 
 // Custom hook to manage dashboard data and operations
 function useDashboardData() {
+  console.log('🚀 useDashboardData: Hook initialized');
+  
   const [data, setData] = useState<Record<string, string | number>[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -370,7 +372,10 @@ const OverviewPage = () => {
   console.log('🚀 OverviewPage component loaded');
   const { data, loading, error } = useDashboardData();
   
+  console.log('🚀 OverviewPage: useDashboardData result:', { dataLength: data.length, loading, error });
+  
   if (loading) {
+    console.log('🚀 OverviewPage: Showing loading state');
     return (
       <div style={{
         display: 'flex',
@@ -410,6 +415,7 @@ const OverviewPage = () => {
   }
 
   if (error) {
+    console.log('🚀 OverviewPage: Showing error state:', error);
     return (
       <div className="page">
         <Navigation />
@@ -461,6 +467,8 @@ const OverviewPage = () => {
       </div>
     );
   }
+
+  console.log('🚀 OverviewPage: Rendering dashboard with data length:', data.length);
 
   // Basic Stats
   const totalMembers = data.length;

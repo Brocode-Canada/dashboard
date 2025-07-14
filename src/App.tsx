@@ -1530,6 +1530,8 @@ function DashboardRoutes() {
 }
 
 function AppRoutes() {
+  console.log('AppRoutes component loaded');
+  
   return (
     <DarkModeProvider>
       <Router>

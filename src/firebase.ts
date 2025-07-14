@@ -47,6 +47,13 @@ if (missingVars.length > 0) {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
+// Debug: Log Firebase initialization
+console.log('Firebase initialized with config:', {
+  projectId: firebaseConfig.projectId,
+  authDomain: firebaseConfig.authDomain,
+  hasApiKey: !!firebaseConfig.apiKey
+});
+
 // Initialize Analytics only if supported and measurementId is available
 let analytics = null;
 if (import.meta.env.VITE_FIREBASE_MEASUREMENT_ID) {
@@ -59,5 +66,10 @@ if (import.meta.env.VITE_FIREBASE_MEASUREMENT_ID) {
 
 const db = getFirestore(app);
 const auth = getAuth(app);
+
+// Debug: Test Firebase connection
+auth.onAuthStateChanged((user) => {
+  console.log('Firebase auth state changed:', user ? 'User logged in' : 'No user');
+});
 
 export { app, analytics, db, auth }; 

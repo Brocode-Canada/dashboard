@@ -60,6 +60,18 @@ function getUnique(arr: string[]) {
   return Array.from(new Set(arr.filter(Boolean)));
 }
 
+// Test component to verify routing
+const TestPage = () => {
+  console.log('🚀 TestPage: Component rendered');
+  return (
+    <div style={{ padding: '2rem', textAlign: 'center' }}>
+      <h1>🧪 Test Page</h1>
+      <p>If you can see this, routing is working!</p>
+      <p>Current time: {new Date().toLocaleString()}</p>
+    </div>
+  );
+};
+
 // Custom hook to manage dashboard data and operations
 function useDashboardData() {
   console.log('🚀 useDashboardData: Hook initialized');
@@ -1662,9 +1674,13 @@ const RequireAuth = ({ allowedRoles }: { allowedRoles: UserRole[] }) => {
 
 function DashboardRoutes() {
   console.log('🚀 DashboardRoutes component loaded');
+  console.log('🚀 DashboardRoutes: Current pathname:', window.location.pathname);
   
   return (
     <Routes>
+      {/* Test route */}
+      <Route path="/test" element={<TestPage />} />
+      
       {/* Public pages - accessible to everyone */}
       <Route path="/overview" element={<OverviewPage />} />
       <Route path="/demographics" element={<DemographicsPage />} />

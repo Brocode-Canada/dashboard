@@ -229,7 +229,7 @@ function Navigation() {
   };
 
   if (!user) {
-    // Not logged in: show only Sign In button
+    // Not logged in: show public dashboard with Sign In option for admin features
     return (
       <nav className="navigation">
         <div className="nav-header">
@@ -254,7 +254,7 @@ function Navigation() {
                 textTransform: 'uppercase',
                 letterSpacing: '1px'
               }}>
-                Management Portal
+                Analytics Dashboard
               </h2>
             </div>
           </div>
@@ -266,7 +266,7 @@ function Navigation() {
             >
               {isDarkMode ? '☀️' : '🌙'}
             </button>
-            <Link to="/signin" className="signout-btn" style={{ background: '#dc2626', color: '#fff', border: 'none' }}>Sign In</Link>
+            <Link to="/signin" className="signout-btn" style={{ background: '#dc2626', color: '#fff', border: 'none' }}>Admin Sign In</Link>
           </div>
         </div>
         <div className="nav-links">
@@ -274,6 +274,9 @@ function Navigation() {
           <Link to="/demographics">Demographics</Link>
           <Link to="/geography">Geography</Link>
           <Link to="/employment">Employment</Link>
+          <span style={{ color: '#9ca3af', fontSize: '0.9rem', padding: '0.5rem 1rem', borderLeft: '1px solid #e5e7eb' }}>
+            📊 Public Analytics
+          </span>
         </div>
       </nav>
     );
@@ -303,7 +306,7 @@ function Navigation() {
               textTransform: 'uppercase',
               letterSpacing: '1px'
             }}>
-              Management Portal
+              Admin Portal
             </h2>
           </div>
         </div>
@@ -330,20 +333,23 @@ function Navigation() {
           <button onClick={handleSignOut} className="signout-btn">Sign Out</button>
         </div>
       </div>
-      <div className="nav-links">
-        <Link to="/overview">Overview</Link>
-        <Link to="/demographics">Demographics</Link>
-        <Link to="/geography">Geography</Link>
-        <Link to="/employment">Employment</Link>
-        {(role === 'admin' || role === 'moderator' || role === 'superadmin') && (
-          <Link to="/members">All Members</Link>
-        )}
-        {(role === 'admin' || role === 'moderator' || role === 'superadmin') && <Link to="/analytics">Analytics</Link>}
-        {/* Temporarily commented out to fix main page
-        {(role === 'admin' || role === 'moderator') && <Link to="/advanced-analytics">Advanced Analytics</Link>}
-        */}
-        {(role === 'admin' || role === 'superadmin') && <Link to="/user-management">User Management</Link>}
-      </div>
+              <div className="nav-links">
+          <Link to="/overview">Overview</Link>
+          <Link to="/demographics">Demographics</Link>
+          <Link to="/geography">Geography</Link>
+          <Link to="/employment">Employment</Link>
+          <span style={{ color: '#9ca3af', fontSize: '0.9rem', padding: '0.5rem 1rem', borderLeft: '1px solid #e5e7eb' }}>
+            🔐 Admin Features
+          </span>
+          {(role === 'admin' || role === 'moderator' || role === 'superadmin') && (
+            <Link to="/members">All Members</Link>
+          )}
+          {(role === 'admin' || role === 'moderator' || role === 'superadmin') && <Link to="/analytics">Analytics</Link>}
+          {/* Temporarily commented out to fix main page
+          {(role === 'admin' || role === 'moderator') && <Link to="/advanced-analytics">Advanced Analytics</Link>}
+          */}
+          {(role === 'admin' || role === 'superadmin') && <Link to="/user-management">User Management</Link>}
+        </div>
     </nav>
   );
 }
@@ -1453,7 +1459,7 @@ const AnalyticsPage = () => {
   );
 };
 
-// Role-based route protection
+// Role-based route protection for admin features
 const RequireAuth = ({ allowedRoles }: { allowedRoles: UserRole[] }) => {
   const { user, role, loading } = useAuth();
   if (loading) return (
@@ -1492,7 +1498,6 @@ const RequireAuth = ({ allowedRoles }: { allowedRoles: UserRole[] }) => {
       </p>
     </div>
   );
-  if (!user && allowedRoles.includes('user')) return <Outlet />;
   if (!user) return <Navigate to="/signin" replace />;
   if (!allowedRoles.includes(role)) return <Navigate to="/overview" replace />;
   return <Outlet />;
@@ -1501,29 +1506,27 @@ const RequireAuth = ({ allowedRoles }: { allowedRoles: UserRole[] }) => {
 function DashboardRoutes() {
   return (
     <Routes>
+      {/* Public pages - accessible to everyone */}
       <Route path="/overview" element={<OverviewPage />} />
       <Route path="/demographics" element={<DemographicsPage />} />
       <Route path="/geography" element={<GeographyPage />} />
       <Route path="/employment" element={<EmploymentPage />} />
-      <Route path="/members" element={<MembersPage />} />
-      <Route path="/analytics" element={<RequireAuth allowedRoles={['admin', 'moderator']} />}
-        >
+      
+      {/* Admin-only pages - require authentication */}
+      <Route path="/members" element={<RequireAuth allowedRoles={['admin', 'moderator', 'superadmin']} />}>
+        <Route path="" element={<MembersPage />} />
+      </Route>
+      <Route path="/analytics" element={<RequireAuth allowedRoles={['admin', 'moderator', 'superadmin']} />}>
         <Route path="" element={<AnalyticsPage />} />
       </Route>
-      {/* Temporarily commented out to fix main page
-      <Route path="/advanced-analytics" element={<RequireAuth allowedRoles={['admin', 'moderator']} />}
-        >
-        <Route path="" element={<AdvancedAnalytics />} />
-      </Route>
-      */}
-      <Route path="/user-management" element={<RequireAuth allowedRoles={['admin', 'superadmin']} />}
-        >
+      <Route path="/user-management" element={<RequireAuth allowedRoles={['admin', 'superadmin']} />}>
         <Route path="" element={<UserManagement />} />
       </Route>
-      <Route path="/member-details/:memberId" element={<RequireAuth allowedRoles={['admin', 'moderator', 'superadmin']} />}
-        >
+      <Route path="/member-details/:memberId" element={<RequireAuth allowedRoles={['admin', 'moderator', 'superadmin']} />}>
         <Route path="" element={<MemberDetails />} />
       </Route>
+      
+      {/* Default redirect */}
       <Route path="" element={<Navigate to="/overview" replace />} />
     </Routes>
   );
@@ -1537,11 +1540,10 @@ function AppRoutes() {
       <Router>
         <Routes>
           <Route path="/signin" element={<SignIn />} />
-          <Route element={<RequireAuth allowedRoles={['user', 'admin', 'moderator', 'superadmin']} />}>
-            <Route path="/*" element={<DashboardRoutes />} />
-          </Route>
-          <Route path="/" element={<Navigate to="/signin" replace />} />
-          <Route path="*" element={<Navigate to="/signin" replace />} />
+          {/* Dashboard routes - public access for analytics, protected for admin features */}
+          <Route path="/*" element={<DashboardRoutes />} />
+          <Route path="/" element={<Navigate to="/overview" replace />} />
+          <Route path="*" element={<Navigate to="/overview" replace />} />
         </Routes>
       </Router>
     </DarkModeProvider>

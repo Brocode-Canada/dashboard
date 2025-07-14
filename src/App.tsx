@@ -103,23 +103,34 @@ function useDashboardData() {
     setLoading(true);
     setError(null);
     
+    console.log('🚀 useDashboardData: Setting up Firestore listener...');
+    
     // Set up real-time listener
     const unsubscribe = onSnapshot(
       collection(db, 'members'),
       (snapshot) => {
+        console.log('🚀 useDashboardData: Firestore data received, count:', snapshot.docs.length);
         const members = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         setData(members);
         setLoading(false);
       },
       (err) => {
-        setError('Failed to load data from Firestore.');
-        console.error(err);
+        console.error('❌ useDashboardData: Firestore error:', err);
+        setError(`Failed to load data from Firestore: ${err.message}`);
         setLoading(false);
+        
+        // If it's a permission error, show a more user-friendly message
+        if (err.code === 'permission-denied') {
+          setError('Data access requires authentication. Please sign in to view member data.');
+        }
       }
     );
 
     // Cleanup subscription
-    return () => unsubscribe();
+    return () => {
+      console.log('🚀 useDashboardData: Cleaning up Firestore listener');
+      unsubscribe();
+    };
   }, []);
 
   // CRUD Functions
@@ -400,9 +411,53 @@ const OverviewPage = () => {
 
   if (error) {
     return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>
-        <p style={{ color: 'red' }}>{error}</p>
+      <div className="page">
+        <Navigation />
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '60vh',
+          textAlign: 'center',
+          padding: '2rem'
+        }}>
+          <div style={{
+            background: '#fef2f2',
+            border: '2px solid #dc2626',
+            borderRadius: '12px',
+            padding: '2rem',
+            maxWidth: '500px'
+          }}>
+            <h2 style={{ color: '#dc2626', marginBottom: '1rem' }}>⚠️ Data Access Issue</h2>
+            <p style={{ color: '#6b7280', marginBottom: '1.5rem' }}>{error}</p>
+            {error.includes('authentication') && (
+              <div>
+                <p style={{ color: '#6b7280', marginBottom: '1rem' }}>
+                  To view member data and analytics, please sign in with your admin credentials.
+                </p>
+                <button 
+                  onClick={() => window.location.href = '/dashboard/signin'}
+                  style={{
+                    background: '#dc2626',
+                    color: 'white',
+                    border: 'none',
+                    padding: '0.75rem 1.5rem',
+                    borderRadius: '8px',
+                    fontSize: '1rem',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    transition: 'background-color 0.2s'
+                  }}
+                  onMouseOver={(e) => e.currentTarget.style.background = '#b91c1c'}
+                  onMouseOut={(e) => e.currentTarget.style.background = '#dc2626'}
+                >
+                  Sign In
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     );
   }
@@ -542,9 +597,53 @@ const DemographicsPage = () => {
 
   if (error) {
     return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>
-        <p style={{ color: 'red' }}>{error}</p>
+      <div className="page">
+        <Navigation />
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '60vh',
+          textAlign: 'center',
+          padding: '2rem'
+        }}>
+          <div style={{
+            background: '#fef2f2',
+            border: '2px solid #dc2626',
+            borderRadius: '12px',
+            padding: '2rem',
+            maxWidth: '500px'
+          }}>
+            <h2 style={{ color: '#dc2626', marginBottom: '1rem' }}>⚠️ Data Access Issue</h2>
+            <p style={{ color: '#6b7280', marginBottom: '1.5rem' }}>{error}</p>
+            {error.includes('authentication') && (
+              <div>
+                <p style={{ color: '#6b7280', marginBottom: '1rem' }}>
+                  To view member data and analytics, please sign in with your admin credentials.
+                </p>
+                <button 
+                  onClick={() => window.location.href = '/dashboard/signin'}
+                  style={{
+                    background: '#dc2626',
+                    color: 'white',
+                    border: 'none',
+                    padding: '0.75rem 1.5rem',
+                    borderRadius: '8px',
+                    fontSize: '1rem',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    transition: 'background-color 0.2s'
+                  }}
+                  onMouseOver={(e) => e.currentTarget.style.background = '#b91c1c'}
+                  onMouseOut={(e) => e.currentTarget.style.background = '#dc2626'}
+                >
+                  Sign In
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     );
   }

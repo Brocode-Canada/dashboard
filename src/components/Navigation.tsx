@@ -126,7 +126,7 @@ export const Navigation: React.FC = () => {
                 isModerator ? 'bg-yellow-100 text-yellow-800' :
                 'bg-green-100 text-green-800'
               }`}>
-                {userRole?.charAt(0).toUpperCase() + userRole?.slice(1)}
+                {userRole ? userRole.charAt(0).toUpperCase() + userRole.slice(1) : 'User'}
               </span>
             </div>
 
@@ -138,7 +138,7 @@ export const Navigation: React.FC = () => {
               >
                 <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center">
                   <span className="text-white font-semibold text-sm">
-                    {userRole?.charAt(0).toUpperCase()}
+                    {userRole ? userRole.charAt(0).toUpperCase() : 'U'}
                   </span>
                 </div>
               </button>

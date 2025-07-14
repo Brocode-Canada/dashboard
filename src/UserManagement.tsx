@@ -330,10 +330,10 @@ const UserManagement: React.FC = () => {
                 ? "You cannot delete yourself"
                 : record.role === 'superadmin'
                   ? "Superadmins cannot be deleted by anyone, including themselves."
-                  : record.role === 'admin' && userRole !== 'superadmin'
+                  : record.role === 'admin' && !canDeleteUser(record.role, userRole)
                     ? "Only superadmins can delete admins."
-                    : record.role === 'superadmin' && userRole !== 'superadmin'
-                      ? "Only superadmins can delete other superadmins."
+                    : !canDeleteUser(record.role, userRole)
+                      ? "You don't have permission to delete this user."
                       : "Are you sure to delete this user?"
             }
             onConfirm={() => handleDelete(record.uid!)}
@@ -357,10 +357,10 @@ const UserManagement: React.FC = () => {
                   ? "You cannot delete yourself"
                   : record.role === 'superadmin'
                     ? "Superadmins cannot be deleted by anyone, including themselves."
-                    : record.role === 'admin' && userRole !== 'superadmin'
+                    : record.role === 'admin' && !canDeleteUser(record.role, userRole)
                       ? "Only superadmins can delete admins."
-                      : record.role === 'superadmin' && userRole !== 'superadmin'
-                        ? "Only superadmins can delete other superadmins."
+                      : !canDeleteUser(record.role, userRole)
+                        ? "You don't have permission to delete this user."
                         : "Delete user"
               }
             >

@@ -1686,7 +1686,8 @@ function AppRoutes() {
       <DarkModeProvider>
         <Router>
           <Routes>
-            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signin" element={<Navigate to="/dashboard/signin" replace />} />
+            <Route path="/dashboard/signin" element={<SignIn />} />
             {/* Dashboard routes - public access for analytics, protected for admin features */}
             <Route path="/*" element={<DashboardRoutes />} />
           </Routes>

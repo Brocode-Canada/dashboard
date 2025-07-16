@@ -5,7 +5,7 @@ import { UserOutlined, MailOutlined, PhoneOutlined, EnvironmentOutlined, Calenda
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from './firebase';
 import { useAuth } from './AuthContext';
-import { useDarkMode } from './App';
+import { useDarkMode } from './hooks/useDarkMode';
 
 interface MemberData {
   id: string;

@@ -3,7 +3,7 @@ import { UploadOutlined, FileTextOutlined } from '@ant-design/icons';
 import { Button, message, Progress, Modal, Table, Tag, Alert } from 'antd';
 import { collection, addDoc, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
-import { useDarkMode } from '../App';
+import { useDarkMode } from '../hooks/useDarkMode';
 
 interface CSVRow {
   name: string;

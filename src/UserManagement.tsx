@@ -4,7 +4,7 @@ import { firebaseService, type User as FirebaseUserData } from './services/fireb
 import { Table, Select, Button, Popconfirm, message, Tag, Modal, Form, Input, Space, Card, Statistic, Row, Col } from 'antd';
 import { useNavigate, Link } from 'react-router-dom';
 import { PlusOutlined, EditOutlined, DeleteOutlined, UserOutlined } from '@ant-design/icons';
-import { useDarkMode } from './App';
+import { useDarkMode } from './hooks/useDarkMode';
 
 // Import Navigation component from App.tsx
 const Navigation = () => {

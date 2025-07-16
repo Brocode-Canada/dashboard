@@ -13,7 +13,7 @@ const Navigation = () => {
 
   const handleSignOut = async () => {
     await signOut();
-    navigate('signin');
+    navigate('/dashboard/signin');
   };
 
   if (!user) {
@@ -269,7 +269,7 @@ const UserManagement: React.FC = () => {
             onMouseLeave={(e) => {
               e.currentTarget.style.color = '#dc2626';
             }}
-                          onClick={() => navigate(`member-details/${record.uid}`)}
+                          onClick={() => navigate(`/dashboard/member-details/${record.uid}`)}
             title="Click to view member details"
           >
             {record.firstName} {record.lastName}
@@ -339,18 +339,14 @@ const UserManagement: React.FC = () => {
             onConfirm={() => handleDelete(record.uid!)}
             okText="Yes"
             cancelText="No"
-            disabled={
-              record.uid === currentUser?.uid ||
-              !canDeleteUser(record.role, userRole)
-            }
           >
             <Button
               danger
               icon={<DeleteOutlined />}
-                              disabled={
-                  record.uid === currentUser?.uid ||
-                  !canDeleteUser(record.role, userRole)
-                }
+              disabled={
+                record.uid === currentUser?.uid ||
+                !canDeleteUser(record.role, userRole)
+              }
               size="small"
               title={
                 record.uid === currentUser?.uid

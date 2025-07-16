@@ -229,7 +229,7 @@ function Navigation() {
 
   const handleSignOut = async () => {
     await signOut();
-    navigate('signin');
+    navigate('/dashboard/signin');
   };
 
   if (!user) {
@@ -270,14 +270,14 @@ function Navigation() {
             >
               {isDarkMode ? '☀️' : '🌙'}
             </button>
-            <Link to="signin" className="signout-btn" style={{ background: '#dc2626', color: '#fff', border: 'none' }}>Admin Sign In</Link>
+            <Link to="/dashboard/signin" className="signout-btn" style={{ background: '#dc2626', color: '#fff', border: 'none' }}>Admin Sign In</Link>
           </div>
         </div>
         <div className="nav-links">
-          <Link to="overview">Overview</Link>
-          <Link to="demographics">Demographics</Link>
-          <Link to="geography">Geography</Link>
-          <Link to="employment">Employment</Link>
+          <Link to="/dashboard/overview">Overview</Link>
+          <Link to="/dashboard/demographics">Demographics</Link>
+          <Link to="/dashboard/geography">Geography</Link>
+          <Link to="/dashboard/employment">Employment</Link>
           <span style={{ color: '#9ca3af', fontSize: '0.9rem', padding: '0.5rem 1rem', borderLeft: '1px solid #e5e7eb' }}>
             📊 Public Analytics
           </span>
@@ -338,21 +338,21 @@ function Navigation() {
         </div>
       </div>
               <div className="nav-links">
-          <Link to="overview">Overview</Link>
-          <Link to="demographics">Demographics</Link>
-          <Link to="geography">Geography</Link>
-          <Link to="employment">Employment</Link>
+          <Link to="/dashboard/overview">Overview</Link>
+          <Link to="/dashboard/demographics">Demographics</Link>
+          <Link to="/dashboard/geography">Geography</Link>
+          <Link to="/dashboard/employment">Employment</Link>
           <span style={{ color: '#9ca3af', fontSize: '0.9rem', padding: '0.5rem 1rem', borderLeft: '1px solid #e5e7eb' }}>
             🔐 Admin Features
           </span>
           {(role === 'admin' || role === 'moderator' || role === 'superadmin') && (
-            <Link to="members">All Members</Link>
+            <Link to="/dashboard/members">All Members</Link>
           )}
-          {(role === 'admin' || role === 'moderator' || role === 'superadmin') && <Link to="analytics">Analytics</Link>}
+          {(role === 'admin' || role === 'moderator' || role === 'superadmin') && <Link to="/dashboard/analytics">Analytics</Link>}
           {/* Temporarily commented out to fix main page
           {(role === 'admin' || role === 'moderator') && <Link to="/advanced-analytics">Advanced Analytics</Link>}
           */}
-          {(role === 'admin' || role === 'superadmin') && <Link to="user-management">User Management</Link>}
+          {(role === 'admin' || role === 'superadmin') && <Link to="/dashboard/user-management">User Management</Link>}
         </div>
     </nav>
   );
@@ -1211,7 +1211,7 @@ const MembersPage = () => {
                     onMouseLeave={(e) => {
                       e.currentTarget.style.color = '#dc2626';
                     }}
-                    onClick={() => navigate(`member-details/${member.id}`)}
+                    onClick={() => navigate(`/dashboard/member-details/${member.id}`)}
                     title="Click to view member details"
                   >
                     {member.name}
@@ -1635,8 +1635,8 @@ const RequireAuth = ({ allowedRoles }: { allowedRoles: UserRole[] }) => {
       </p>
     </div>
   );
-  if (!user) return <Navigate to="signin" replace />;
-  if (!allowedRoles.includes(role)) return <Navigate to="overview" replace />;
+  if (!user) return <Navigate to="/dashboard/signin" replace />;
+  if (!allowedRoles.includes(role)) return <Navigate to="/dashboard/overview" replace />;
   return <Outlet />;
 };
 

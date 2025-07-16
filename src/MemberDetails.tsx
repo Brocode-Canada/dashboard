@@ -76,14 +76,14 @@ const Navigation = () => {
             >
               {isDarkMode ? '☀️' : '🌙'}
             </button>
-            <Link to="signin" className="signout-btn" style={{ background: '#dc2626', color: '#fff', border: 'none' }}>Sign In</Link>
+            <Link to="/dashboard/signin" className="signout-btn" style={{ background: '#dc2626', color: '#fff', border: 'none' }}>Sign In</Link>
           </div>
         </div>
         <div className="nav-links">
-          <Link to="overview">Overview</Link>
-          <Link to="demographics">Demographics</Link>
-          <Link to="geography">Geography</Link>
-          <Link to="employment">Employment</Link>
+          <Link to="/dashboard/overview">Overview</Link>
+          <Link to="/dashboard/demographics">Demographics</Link>
+          <Link to="/dashboard/geography">Geography</Link>
+          <Link to="/dashboard/employment">Employment</Link>
         </div>
       </nav>
     );
@@ -141,15 +141,15 @@ const Navigation = () => {
         </div>
       </div>
       <div className="nav-links">
-        <Link to="overview">Overview</Link>
-        <Link to="demographics">Demographics</Link>
-        <Link to="geography">Geography</Link>
-        <Link to="employment">Employment</Link>
+        <Link to="/dashboard/overview">Overview</Link>
+        <Link to="/dashboard/demographics">Demographics</Link>
+        <Link to="/dashboard/geography">Geography</Link>
+        <Link to="/dashboard/employment">Employment</Link>
         {(role === 'admin' || role === 'moderator' || role === 'superadmin') && (
-          <Link to="members">All Members</Link>
+          <Link to="/dashboard/members">All Members</Link>
         )}
-        {(role === 'admin' || role === 'moderator' || role === 'superadmin') && <Link to="analytics">Analytics</Link>}
-        {(role === 'admin' || role === 'superadmin') && <Link to="user-management">User Management</Link>}
+        {(role === 'admin' || role === 'moderator' || role === 'superadmin') && <Link to="/dashboard/analytics">Analytics</Link>}
+        {(role === 'admin' || role === 'superadmin') && <Link to="/dashboard/user-management">User Management</Link>}
       </div>
     </nav>
   );
@@ -291,7 +291,7 @@ const MemberDetails: React.FC = () => {
         </p>
         <Button 
           type="primary" 
-          onClick={() => navigate('members')}
+          onClick={() => navigate('/dashboard/members')}
           style={{ background: '#dc2626', borderColor: '#dc2626' }}
         >
           Back to All Members

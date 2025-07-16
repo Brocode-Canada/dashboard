@@ -60,6 +60,12 @@ function getUnique(arr: string[]) {
   return Array.from(new Set(arr.filter(Boolean)));
 }
 
+// Default dashboard component
+const DefaultDashboard = () => {
+  console.log('🚀 DefaultDashboard: Component rendered');
+  return <OverviewPage />;
+};
+
 // Test component to verify routing
 const TestPage = () => {
   console.log('🚀 TestPage: Component rendered');
@@ -273,7 +279,7 @@ function Navigation() {
 
   const handleSignOut = async () => {
     await signOut();
-    navigate('/signin');
+    navigate('signin');
   };
 
   if (!user) {
@@ -314,14 +320,14 @@ function Navigation() {
             >
               {isDarkMode ? '☀️' : '🌙'}
             </button>
-            <Link to="/signin" className="signout-btn" style={{ background: '#dc2626', color: '#fff', border: 'none' }}>Admin Sign In</Link>
+            <Link to="signin" className="signout-btn" style={{ background: '#dc2626', color: '#fff', border: 'none' }}>Admin Sign In</Link>
           </div>
         </div>
         <div className="nav-links">
-          <Link to="/overview">Overview</Link>
-          <Link to="/demographics">Demographics</Link>
-          <Link to="/geography">Geography</Link>
-          <Link to="/employment">Employment</Link>
+          <Link to="overview">Overview</Link>
+          <Link to="demographics">Demographics</Link>
+          <Link to="geography">Geography</Link>
+          <Link to="employment">Employment</Link>
           <span style={{ color: '#9ca3af', fontSize: '0.9rem', padding: '0.5rem 1rem', borderLeft: '1px solid #e5e7eb' }}>
             📊 Public Analytics
           </span>
@@ -382,21 +388,21 @@ function Navigation() {
         </div>
       </div>
               <div className="nav-links">
-          <Link to="/overview">Overview</Link>
-          <Link to="/demographics">Demographics</Link>
-          <Link to="/geography">Geography</Link>
-          <Link to="/employment">Employment</Link>
+          <Link to="overview">Overview</Link>
+          <Link to="demographics">Demographics</Link>
+          <Link to="geography">Geography</Link>
+          <Link to="employment">Employment</Link>
           <span style={{ color: '#9ca3af', fontSize: '0.9rem', padding: '0.5rem 1rem', borderLeft: '1px solid #e5e7eb' }}>
             🔐 Admin Features
           </span>
           {(role === 'admin' || role === 'moderator' || role === 'superadmin') && (
-            <Link to="/members">All Members</Link>
+            <Link to="members">All Members</Link>
           )}
-          {(role === 'admin' || role === 'moderator' || role === 'superadmin') && <Link to="/analytics">Analytics</Link>}
+          {(role === 'admin' || role === 'moderator' || role === 'superadmin') && <Link to="analytics">Analytics</Link>}
           {/* Temporarily commented out to fix main page
           {(role === 'admin' || role === 'moderator') && <Link to="/advanced-analytics">Advanced Analytics</Link>}
           */}
-          {(role === 'admin' || role === 'superadmin') && <Link to="/user-management">User Management</Link>}
+          {(role === 'admin' || role === 'superadmin') && <Link to="user-management">User Management</Link>}
         </div>
     </nav>
   );
@@ -1255,7 +1261,7 @@ const MembersPage = () => {
                     onMouseLeave={(e) => {
                       e.currentTarget.style.color = '#dc2626';
                     }}
-                    onClick={() => navigate(`/member-details/${member.id}`)}
+                    onClick={() => navigate(`member-details/${member.id}`)}
                     title="Click to view member details"
                   >
                     {member.name}
@@ -1679,8 +1685,8 @@ const RequireAuth = ({ allowedRoles }: { allowedRoles: UserRole[] }) => {
       </p>
     </div>
   );
-  if (!user) return <Navigate to="/signin" replace />;
-  if (!allowedRoles.includes(role)) return <Navigate to="/overview" replace />;
+  if (!user) return <Navigate to="signin" replace />;
+  if (!allowedRoles.includes(role)) return <Navigate to="overview" replace />;
   return <Outlet />;
 };
 
@@ -1691,30 +1697,31 @@ function DashboardRoutes() {
   return (
     <Routes>
       {/* Test route */}
-      <Route path="/test" element={<TestPage />} />
+      <Route path="test" element={<TestPage />} />
       
       {/* Public pages - accessible to everyone */}
-      <Route path="/overview" element={<OverviewPage />} />
-      <Route path="/demographics" element={<DemographicsPage />} />
-      <Route path="/geography" element={<GeographyPage />} />
-      <Route path="/employment" element={<EmploymentPage />} />
+      <Route path="overview" element={<OverviewPage />} />
+      <Route path="demographics" element={<DemographicsPage />} />
+      <Route path="geography" element={<GeographyPage />} />
+      <Route path="employment" element={<EmploymentPage />} />
       
       {/* Admin-only pages - require authentication */}
-      <Route path="/members" element={<RequireAuth allowedRoles={['admin', 'moderator', 'superadmin']} />}>
+      <Route path="members" element={<RequireAuth allowedRoles={['admin', 'moderator', 'superadmin']} />}>
         <Route path="" element={<MembersPage />} />
       </Route>
-      <Route path="/analytics" element={<RequireAuth allowedRoles={['admin', 'moderator', 'superadmin']} />}>
+      <Route path="analytics" element={<RequireAuth allowedRoles={['admin', 'moderator', 'superadmin']} />}>
         <Route path="" element={<AnalyticsPage />} />
       </Route>
-      <Route path="/user-management" element={<RequireAuth allowedRoles={['admin', 'superadmin']} />}>
+      <Route path="user-management" element={<RequireAuth allowedRoles={['admin', 'superadmin']} />}>
         <Route path="" element={<UserManagement />} />
       </Route>
-      <Route path="/member-details/:memberId" element={<RequireAuth allowedRoles={['admin', 'moderator', 'superadmin']} />}>
+      <Route path="member-details/:memberId" element={<RequireAuth allowedRoles={['admin', 'moderator', 'superadmin']} />}>
         <Route path="" element={<MemberDetails />} />
       </Route>
       
-      {/* Default redirect */}
-      <Route path="" element={<Navigate to="/overview" replace />} />
+      {/* Default redirect - match both empty path and dashboard path */}
+      <Route path="" element={<DefaultDashboard />} />
+      <Route path="/" element={<DefaultDashboard />} />
       
       {/* Fallback route for debugging */}
       <Route path="*" element={<FallbackPage />} />
@@ -1726,12 +1733,6 @@ function AppRoutes() {
   console.log('🚀 AppRoutes component loaded');
   console.log('🚀 AppRoutes: Current location:', window.location.href);
   
-  // Add error boundary debugging
-  const handleError = (error: Error, errorInfo: any) => {
-    console.error('❌ AppRoutes: Error caught:', error);
-    console.error('❌ AppRoutes: Error info:', errorInfo);
-  };
-  
   try {
     return (
       <DarkModeProvider>
@@ -1740,8 +1741,6 @@ function AppRoutes() {
             <Route path="/signin" element={<SignIn />} />
             {/* Dashboard routes - public access for analytics, protected for admin features */}
             <Route path="/*" element={<DashboardRoutes />} />
-            <Route path="/" element={<Navigate to="/overview" replace />} />
-            <Route path="*" element={<Navigate to="/overview" replace />} />
           </Routes>
         </Router>
       </DarkModeProvider>

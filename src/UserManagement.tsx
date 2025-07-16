@@ -13,7 +13,7 @@ const Navigation = () => {
 
   const handleSignOut = async () => {
     await signOut();
-    navigate('/signin');
+    navigate('signin');
   };
 
   if (!user) {
@@ -269,7 +269,7 @@ const UserManagement: React.FC = () => {
             onMouseLeave={(e) => {
               e.currentTarget.style.color = '#dc2626';
             }}
-            onClick={() => navigate(`/member-details/${record.uid}`)}
+                          onClick={() => navigate(`member-details/${record.uid}`)}
             title="Click to view member details"
           >
             {record.firstName} {record.lastName}

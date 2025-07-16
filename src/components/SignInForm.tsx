@@ -17,7 +17,7 @@ export const SignInForm: React.FC<SignInFormProps> = ({ onSuccess, onError }) =>
   const navigate = useNavigate();
   const location = useLocation();
 
-  const from = location.state?.from?.pathname || '/dashboard';
+  const from = location.state?.from?.pathname || 'overview';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

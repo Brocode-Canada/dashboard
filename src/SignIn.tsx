@@ -16,7 +16,7 @@ const SignIn: React.FC = () => {
 
   React.useEffect(() => {
     if (!loading && user) {
-      navigate('/overview');
+      navigate('overview');
     }
   }, [user, loading, navigate]);
 

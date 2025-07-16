@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from 'firebase/firestore';
 import { db } from './firebase';
 import { useAuth } from './AuthContext';
@@ -11,50 +11,12 @@ import SignIn from './SignIn';
 import UserManagement from './UserManagement';
 import MemberDetails from './MemberDetails';
 import CSVImport from './components/CSVImport';
+import { useDarkMode, DarkModeProvider } from './hooks/useDarkMode';
 // import { AdvancedAnalytics } from './components/AdvancedAnalytics';
 
 type UserRole = 'superadmin' | 'admin' | 'moderator' | 'user';
 
 const COLORS = ['#dc2626', '#b91c1c', '#ef4444', '#f87171', '#fca5a5', '#fecaca', '#fef2f2', '#fee2e2', '#fecaca', '#fca5a5'];
-
-// Dark Mode Context
-interface DarkModeContextType {
-  isDarkMode: boolean;
-  toggleDarkMode: () => void;
-}
-
-const DarkModeContext = createContext<DarkModeContextType>({
-  isDarkMode: false,
-  toggleDarkMode: () => {},
-});
-
-export const useDarkMode = () => useContext(DarkModeContext);
-
-const DarkModeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    const saved = localStorage.getItem('darkMode');
-    return saved ? JSON.parse(saved) : false;
-  });
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-  };
-
-  useEffect(() => {
-    localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
-    if (isDarkMode) {
-      document.body.classList.add('dark-mode');
-    } else {
-      document.body.classList.remove('dark-mode');
-    }
-  }, [isDarkMode]);
-
-  return (
-    <DarkModeContext.Provider value={{ isDarkMode, toggleDarkMode }}>
-      {children}
-    </DarkModeContext.Provider>
-  );
-};
 
 function getUnique(arr: string[]) {
   return Array.from(new Set(arr.filter(Boolean)));
@@ -74,18 +36,6 @@ const TestPage = () => {
       <h1>🧪 Test Page</h1>
       <p>If you can see this, routing is working!</p>
       <p>Current time: {new Date().toLocaleString()}</p>
-    </div>
-  );
-};
-
-// Simple fallback component
-const FallbackPage = () => {
-  console.log('🚀 FallbackPage: Component rendered');
-  return (
-    <div style={{ padding: '2rem', textAlign: 'center' }}>
-      <h1>🔄 Fallback Page</h1>
-      <p>This is a fallback component to test rendering.</p>
-      <p>Current pathname: {window.location.pathname}</p>
     </div>
   );
 };
@@ -1719,12 +1669,10 @@ function DashboardRoutes() {
         <Route path="" element={<MemberDetails />} />
       </Route>
       
-      {/* Default redirect - match both empty path and dashboard path */}
-      <Route path="" element={<DefaultDashboard />} />
-      <Route path="/" element={<DefaultDashboard />} />
-      
-      {/* Fallback route for debugging */}
-      <Route path="*" element={<FallbackPage />} />
+      {/* Default route - this should match the root path */}
+      <Route index element={<DefaultDashboard />} />
+      {/* Fallback route - show dashboard for any unknown path */}
+      <Route path="*" element={<DefaultDashboard />} />
     </Routes>
   );
 }

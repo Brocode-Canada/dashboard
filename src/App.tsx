@@ -22,7 +22,7 @@ function getUnique(arr: string[]) {
   return Array.from(new Set(arr.filter(Boolean)));
 }
 
-// Default dashboard component
+// Default dashboard component (no longer used as index route)
 const DefaultDashboard = () => {
   console.log('🚀 DefaultDashboard: Component rendered');
   return <OverviewPage />;
@@ -1669,10 +1669,10 @@ function DashboardRoutes() {
         <Route path="" element={<MemberDetails />} />
       </Route>
       
-      {/* Default route - this should match the root path */}
-      <Route index element={<DefaultDashboard />} />
-      {/* Fallback route - show dashboard for any unknown path */}
-      <Route path="*" element={<DefaultDashboard />} />
+      {/* Default route - redirect to overview */}
+      <Route index element={<Navigate to="overview" replace />} />
+      {/* Fallback route - redirect to overview for any unknown path */}
+      <Route path="*" element={<Navigate to="overview" replace />} />
     </Routes>
   );
 }
@@ -1686,10 +1686,14 @@ function AppRoutes() {
       <DarkModeProvider>
         <Router>
           <Routes>
+            {/* Redirect root to dashboard overview */}
+            <Route path="/" element={<Navigate to="/dashboard/overview" replace />} />
             <Route path="/signin" element={<Navigate to="/dashboard/signin" replace />} />
             <Route path="/dashboard/signin" element={<SignIn />} />
             {/* Dashboard routes - public access for analytics, protected for admin features */}
-            <Route path="/*" element={<DashboardRoutes />} />
+            <Route path="/dashboard/*" element={<DashboardRoutes />} />
+            {/* Fallback for any other routes */}
+            <Route path="*" element={<Navigate to="/dashboard/overview" replace />} />
           </Routes>
         </Router>
       </DarkModeProvider>

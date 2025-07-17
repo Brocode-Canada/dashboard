@@ -12,7 +12,7 @@ import UserManagement from './UserManagement';
 import MemberDetails from './MemberDetails';
 import CSVImport from './components/CSVImport';
 import { Navigation } from './components/Navigation';
-import { useDarkMode, DarkModeProvider } from './hooks/useDarkMode';
+
 // import { AdvancedAnalytics } from './components/AdvancedAnalytics';
 
 type UserRole = 'superadmin' | 'admin' | 'moderator' | 'user';
@@ -807,7 +807,7 @@ const MembersPage = () => {
   const { role } = useAuth();
   const navigate = useNavigate();
   const [showCSVModal, setShowCSVModal] = useState(false);
-  const { isDarkMode } = useDarkMode();
+
 
   if (loading) {
     return (
@@ -912,8 +912,8 @@ const MembersPage = () => {
             icon={<FileTextOutlined />}
             onClick={() => setShowCSVModal(true)}
             style={{
-              background: isDarkMode ? '#8b5cf6' : '#dc2626',
-              borderColor: isDarkMode ? '#8b5cf6' : '#dc2626',
+                      background: '#dc2626',
+        borderColor: '#dc2626',
               display: 'flex',
               alignItems: 'center',
               gap: '0.5rem'
@@ -1097,9 +1097,9 @@ const MembersPage = () => {
                   <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
                     <button 
                       onClick={() => setEditingMember(member)}
-                      disabled={role !== 'admin'}
+                      disabled={role !== 'admin' && role !== 'superadmin'}
                       style={{
-                        background: role === 'admin' 
+                        background: (role === 'admin' || role === 'superadmin')
                           ? 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' 
                           : 'linear-gradient(135deg, #9ca3af 0%, #6b7280 100%)',
                         color: 'white',
@@ -1108,39 +1108,39 @@ const MembersPage = () => {
                         padding: '6px 12px',
                         fontSize: '12px',
                         fontWeight: '600',
-                        cursor: role === 'admin' ? 'pointer' : 'not-allowed',
+                        cursor: (role === 'admin' || role === 'superadmin') ? 'pointer' : 'not-allowed',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '4px',
-                        boxShadow: role === 'admin' 
+                        boxShadow: (role === 'admin' || role === 'superadmin')
                           ? '0 2px 4px rgba(59, 130, 246, 0.2)' 
                           : '0 2px 4px rgba(156, 163, 175, 0.2)',
                         transition: 'all 0.2s ease',
                         minWidth: '60px',
                         justifyContent: 'center',
-                        opacity: role === 'admin' ? 1 : 0.6
+                        opacity: (role === 'admin' || role === 'superadmin') ? 1 : 0.6
                       }}
                       onMouseEnter={(e) => {
-                        if (role === 'admin') {
+                        if (role === 'admin' || role === 'superadmin') {
                           e.currentTarget.style.transform = 'translateY(-1px)';
                           e.currentTarget.style.boxShadow = '0 4px 8px rgba(59, 130, 246, 0.3)';
                         }
                       }}
                       onMouseLeave={(e) => {
-                        if (role === 'admin') {
+                        if (role === 'admin' || role === 'superadmin') {
                           e.currentTarget.style.transform = 'translateY(0)';
                           e.currentTarget.style.boxShadow = '0 2px 4px rgba(59, 130, 246, 0.2)';
                         }
                       }}
-                      title={role !== 'admin' ? 'Only admins can edit members' : 'Edit member'}
+                      title={(role !== 'admin' && role !== 'superadmin') ? 'Only admins and superadmins can edit members' : 'Edit member'}
                     >
                       ✏️ Edit
                     </button>
                     <button 
                       onClick={() => deleteMember(member.id as string)}
-                      disabled={role !== 'admin'}
+                      disabled={role !== 'admin' && role !== 'superadmin'}
                       style={{
-                        background: role === 'admin' 
+                        background: (role === 'admin' || role === 'superadmin')
                           ? 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)' 
                           : 'linear-gradient(135deg, #9ca3af 0%, #6b7280 100%)',
                         color: 'white',
@@ -1149,31 +1149,31 @@ const MembersPage = () => {
                         padding: '6px 12px',
                         fontSize: '12px',
                         fontWeight: '600',
-                        cursor: role === 'admin' ? 'pointer' : 'not-allowed',
+                        cursor: (role === 'admin' || role === 'superadmin') ? 'pointer' : 'not-allowed',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '4px',
-                        boxShadow: role === 'admin' 
+                        boxShadow: (role === 'admin' || role === 'superadmin')
                           ? '0 2px 4px rgba(239, 68, 68, 0.2)' 
                           : '0 2px 4px rgba(156, 163, 175, 0.2)',
                         transition: 'all 0.2s ease',
                         minWidth: '60px',
                         justifyContent: 'center',
-                        opacity: role === 'admin' ? 1 : 0.6
+                        opacity: (role === 'admin' || role === 'superadmin') ? 1 : 0.6
                       }}
                       onMouseEnter={(e) => {
-                        if (role === 'admin') {
+                        if (role === 'admin' || role === 'superadmin') {
                           e.currentTarget.style.transform = 'translateY(-1px)';
                           e.currentTarget.style.boxShadow = '0 4px 8px rgba(239, 68, 68, 0.3)';
                         }
                       }}
                       onMouseLeave={(e) => {
-                        if (role === 'admin') {
+                        if (role === 'admin' || role === 'superadmin') {
                           e.currentTarget.style.transform = 'translateY(0)';
                           e.currentTarget.style.boxShadow = '0 2px 4px rgba(239, 68, 68, 0.2)';
                         }
                       }}
-                      title={role !== 'admin' ? 'Only admins can delete members' : 'Delete member'}
+                      title={(role !== 'admin' && role !== 'superadmin') ? 'Only admins and superadmins can delete members' : 'Delete member'}
                     >
                       🗑️ Delete
                     </button>
@@ -1205,7 +1205,7 @@ const MembersPage = () => {
       <Modal
         title={
           <span style={{ 
-            color: isDarkMode ? '#f8fafc' : '#dc2626',
+            color: '#dc2626',
             fontSize: '1.3rem',
             fontWeight: '600',
             display: 'flex',
@@ -1537,7 +1537,7 @@ function DashboardRoutes() {
       <Route path="analytics" element={<RequireAuth allowedRoles={['admin', 'moderator', 'superadmin']} />}>
         <Route path="" element={<AnalyticsPage />} />
       </Route>
-      <Route path="user-management" element={<RequireAuth allowedRoles={['admin', 'superadmin']} />}>
+      <Route path="user-management" element={<RequireAuth allowedRoles={['superadmin']} />}>
         <Route path="" element={<UserManagement />} />
       </Route>
       <Route path="member-details/:memberId" element={<RequireAuth allowedRoles={['admin', 'moderator', 'superadmin']} />}>
@@ -1558,7 +1558,6 @@ function AppRoutes() {
   
   try {
     return (
-      <DarkModeProvider>
         <Router>
           <Routes>
             {/* Redirect root to dashboard overview */}
@@ -1571,7 +1570,6 @@ function AppRoutes() {
             <Route path="*" element={<Navigate to="/dashboard/overview" replace />} />
           </Routes>
         </Router>
-      </DarkModeProvider>
     );
   } catch (error) {
     console.error('❌ AppRoutes: Error in render:', error);

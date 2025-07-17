@@ -3,7 +3,7 @@ import { UploadOutlined, FileTextOutlined } from '@ant-design/icons';
 import { Button, message, Progress, Modal, Table, Tag, Alert } from 'antd';
 import { collection, addDoc, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
-import { useDarkMode } from '../hooks/useDarkMode';
+
 
 interface CSVRow {
   name: string;
@@ -41,7 +41,7 @@ const CSVImport: React.FC = () => {
   const [showPreview, setShowPreview] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { isDarkMode } = useDarkMode();
+
 
   const parseCSV = (csvText: string): CSVRow[] => {
     const lines = csvText.split('\n');

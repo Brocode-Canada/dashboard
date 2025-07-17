@@ -5,7 +5,7 @@ import { UserOutlined, MailOutlined, PhoneOutlined, EnvironmentOutlined, Calenda
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from './firebase';
 
-import { useDarkMode } from './hooks/useDarkMode';
+
 import { Navigation } from './components/Navigation';
 
 interface MemberData {
@@ -32,7 +32,7 @@ interface MemberData {
 const MemberDetails: React.FC = () => {
   const { memberId } = useParams<{ memberId: string }>();
   const navigate = useNavigate();
-  const { isDarkMode } = useDarkMode();
+
   
   const [member, setMember] = useState<MemberData | null>(null);
   const [loading, setLoading] = useState(true);

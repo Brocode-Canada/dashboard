@@ -4,7 +4,7 @@ import { firebaseService, type User as FirebaseUserData } from './services/fireb
 import { Table, Select, Button, Popconfirm, message, Tag, Modal, Form, Input, Space, Card, Statistic, Row, Col } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { PlusOutlined, EditOutlined, DeleteOutlined, UserOutlined, KeyOutlined } from '@ant-design/icons';
-import { useDarkMode } from './hooks/useDarkMode';
+
 import { Navigation } from './components/Navigation';
 
 const roleOptions = [
@@ -29,8 +29,40 @@ const UserManagement: React.FC = () => {
   // Helper function to check if user can delete another user
   const canDeleteUser = (targetRole: string, currentRole: string) => {
     if (targetRole === 'superadmin') return currentRole === 'superadmin';
-    if (targetRole === 'admin') return currentRole === 'superadmin' || currentRole === 'admin';
-    return true; // Can delete regular users and moderators
+    if (targetRole === 'admin') return currentRole === 'superadmin';
+    return currentRole === 'superadmin' || currentRole === 'admin'; // Can delete regular users and moderators
+  };
+
+  // Helper function to check if user can edit another user
+  const canEditUser = (targetRole: string, currentRole: string) => {
+    if (targetRole === 'superadmin') return currentRole === 'superadmin';
+    if (targetRole === 'admin') return currentRole === 'superadmin';
+    return currentRole === 'superadmin' || currentRole === 'admin'; // Can edit regular users and moderators
+  };
+
+  // Helper function to check if user can change role of another user
+  const canChangeRole = (targetRole: string, newRole: string, currentRole: string) => {
+    // Superadmins can change any role
+    if (currentRole === 'superadmin') return true;
+    
+    // Admins can only change roles to moderator or user, and only for users/moderators
+    if (currentRole === 'admin') {
+      if (targetRole === 'superadmin' || targetRole === 'admin') return false;
+      if (newRole === 'superadmin' || newRole === 'admin') return false;
+      return true;
+    }
+    
+    return false;
+  };
+
+  // Helper function to get available roles for current user
+  const getAvailableRoles = (currentRole: string) => {
+    if (currentRole === 'superadmin') {
+      return roleOptions; // Superadmins can create any role
+    } else if (currentRole === 'admin') {
+      return roleOptions.filter(role => role.value !== 'superadmin'); // Admins can't create superadmins
+    }
+    return [];
   };
   const [users, setUsers] = useState<FirebaseUserData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -42,7 +74,7 @@ const UserManagement: React.FC = () => {
   const [createForm] = Form.useForm();
   const [editForm] = Form.useForm();
   const [passwordForm] = Form.useForm();
-  const { isDarkMode, toggleDarkMode } = useDarkMode();
+
 
   useEffect(() => {
     fetchUsers();
@@ -119,7 +151,7 @@ const UserManagement: React.FC = () => {
         firstName: values.firstName,
         lastName: values.lastName,
         phoneNumber: values.phoneNumber,
-        role: values.role as 'admin' | 'moderator' | 'user',
+        role: values.role as 'superadmin' | 'admin' | 'moderator' | 'user',
         status: values.status as 'active' | 'inactive' | 'suspended',
         metadata: {
           city: values.city,
@@ -155,7 +187,7 @@ const UserManagement: React.FC = () => {
         firstName: values.firstName,
         lastName: values.lastName,
         phoneNumber: values.phoneNumber,
-        role: values.role as 'admin' | 'moderator' | 'user',
+        role: values.role as 'superadmin' | 'admin' | 'moderator' | 'user',
         status: values.status as 'active' | 'inactive' | 'suspended',
         metadata: {
           city: values.city,
@@ -274,8 +306,12 @@ const UserManagement: React.FC = () => {
       render: (_: unknown, record: FirebaseUserData) => (
         <Select
           value={record.role}
-          onChange={val => handleRoleChange(record.uid!, val)}
-          disabled={record.uid === currentUser?.uid || (record.role === 'admin' && currentRole !== 'admin')}
+          onChange={(val) => {
+            if (canChangeRole(record.role, val, currentRole || '')) {
+              handleRoleChange(record.uid!, val);
+            }
+          }}
+          disabled={record.uid === currentUser?.uid}
           style={{ minWidth: 120 }}
           options={roleOptions}
         />
@@ -304,6 +340,12 @@ const UserManagement: React.FC = () => {
             icon={<EditOutlined />}
             size="small"
             onClick={() => openEditModal(record)}
+            disabled={!canEditUser(record.role, currentRole || '')}
+            title={
+              !canEditUser(record.role, currentRole || '')
+                ? `You don't have permission to edit ${record.role}s`
+                : "Edit user"
+            }
           >
             Edit
           </Button>
@@ -444,9 +486,7 @@ const UserManagement: React.FC = () => {
           <Tag color="red">Admins cannot be deleted or demoted by non-admins. You cannot delete yourself.</Tag>
         </div>
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 16 }}>
-          <button onClick={toggleDarkMode} className="dark-mode-toggle" title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}>
-            {isDarkMode ? '\u2600\ufe0f' : '\ud83c\udf19'}
-          </button>
+          
         </div>
       </div>
 
@@ -520,7 +560,7 @@ const UserManagement: React.FC = () => {
                 label="Role"
                 rules={[{ required: true, message: 'Please select role' }]}
               >
-                <Select options={roleOptions} />
+                <Select options={getAvailableRoles(currentRole || '')} />
               </Form.Item>
             </Col>
             <Col span={12}>

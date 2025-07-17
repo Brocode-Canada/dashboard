@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from 'antd';
-import { KeyOutlined } from '@ant-design/icons';
+import { KeyOutlined, MenuOutlined, CloseOutlined } from '@ant-design/icons';
 import { useAuth } from '../AuthContext';
-import { useDarkMode } from '../hooks/useDarkMode';
 import { ChangePassword } from './ChangePassword';
 
 export const Navigation: React.FC = () => {
   const { user, role, signOut } = useAuth();
-  const { isDarkMode, toggleDarkMode } = useDarkMode();
   const navigate = useNavigate();
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   console.log('🚀 Navigation: Current user role:', role);
   console.log('🚀 Navigation: User authenticated:', !!user);
@@ -18,6 +17,10 @@ export const Navigation: React.FC = () => {
   const handleSignOut = async () => {
     await signOut();
     navigate('/dashboard/signin');
+  };
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
   };
 
   if (!user) {
@@ -55,13 +58,6 @@ export const Navigation: React.FC = () => {
             </div>
           </div>
           <div className="user-info">
-            <button 
-              onClick={toggleDarkMode} 
-              className="dark-mode-toggle"
-              title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
-            >
-              {isDarkMode ? '☀️' : '🌙'}
-            </button>
             <Link to="/dashboard/signin" className="signout-btn" style={{ background: '#dc2626', color: '#fff', border: 'none' }}>
               Admin Sign In
             </Link>
@@ -125,13 +121,6 @@ export const Navigation: React.FC = () => {
           }}>
             {user.email} ({role})
           </span>
-          <button 
-            onClick={toggleDarkMode} 
-            className="dark-mode-toggle"
-            title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
-          >
-            {isDarkMode ? '☀️' : '🌙'}
-          </button>
           <Button
             type="default"
             icon={<KeyOutlined />}
@@ -148,9 +137,20 @@ export const Navigation: React.FC = () => {
             Password
           </Button>
           <button onClick={handleSignOut} className="signout-btn">Sign Out</button>
+          
+          {/* Mobile Menu Toggle */}
+          <button 
+            className="mobile-menu-toggle"
+            onClick={toggleMobileMenu}
+            aria-label="Toggle mobile menu"
+          >
+            {mobileMenuOpen ? <CloseOutlined /> : <MenuOutlined />}
+          </button>
         </div>
       </div>
-      <div className="nav-links">
+      
+      {/* Desktop Navigation Links */}
+      <div className="nav-links desktop-nav">
         {/* Public pages - accessible to all authenticated users */}
         <Link to="/dashboard/overview">Overview</Link>
         <Link to="/dashboard/demographics">Demographics</Link>
@@ -166,11 +166,33 @@ export const Navigation: React.FC = () => {
         )}
         
         {/* Super admin only pages */}
-        {(role === 'admin' || role === 'superadmin') && (
+        {role === 'superadmin' && (
           <Link to="/dashboard/user-management">User Management</Link>
         )}
-        
+      </div>
 
+      {/* Mobile Navigation Menu */}
+      <div className={`mobile-nav-menu ${mobileMenuOpen ? 'open' : ''}`}>
+        <div className="mobile-nav-links">
+          {/* Public pages */}
+          <Link to="/dashboard/overview" onClick={() => setMobileMenuOpen(false)}>Overview</Link>
+          <Link to="/dashboard/demographics" onClick={() => setMobileMenuOpen(false)}>Demographics</Link>
+          <Link to="/dashboard/geography" onClick={() => setMobileMenuOpen(false)}>Geography</Link>
+          <Link to="/dashboard/employment" onClick={() => setMobileMenuOpen(false)}>Employment</Link>
+          
+          {/* Admin-only pages */}
+          {(role === 'admin' || role === 'moderator' || role === 'superadmin') && (
+            <>
+              <Link to="/dashboard/members" onClick={() => setMobileMenuOpen(false)}>All Members</Link>
+              <Link to="/dashboard/analytics" onClick={() => setMobileMenuOpen(false)}>Analytics</Link>
+            </>
+          )}
+          
+          {/* Super admin only pages */}
+          {role === 'superadmin' && (
+            <Link to="/dashboard/user-management" onClick={() => setMobileMenuOpen(false)}>User Management</Link>
+          )}
+        </div>
       </div>
       
       {/* Password Change Modal */}

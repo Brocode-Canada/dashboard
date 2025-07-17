@@ -157,16 +157,6 @@ export const Navigation: React.FC = () => {
             className="mobile-menu-toggle"
             onClick={toggleMobileMenu}
             aria-label="Toggle mobile menu"
-            style={{ 
-              background: 'transparent', 
-              color: '#374151', 
-              border: '1px solid #e5e7eb',
-              borderRadius: '8px',
-              padding: '8px',
-              fontSize: '1.2rem',
-              cursor: 'pointer',
-              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
-            }}
           >
             {mobileMenuOpen ? <CloseOutlined /> : <MenuOutlined />}
           </button>

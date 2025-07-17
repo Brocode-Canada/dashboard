@@ -2203,27 +2203,7 @@ body {
   color: #dc2626;
 }
 
-/* Debug styles to ensure burger menu is visible */
-.mobile-menu-toggle {
-  background: transparent !important;
-  border: 1px solid #e5e7eb !important;
-  min-width: 44px !important;
-  min-height: 44px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  color: #374151 !important;
-  border-radius: 8px !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
-  margin-left: 0 !important;
-  z-index: 1002 !important;
-}
 
-.mobile-menu-toggle:hover {
-  background: #f3f4f6 !important;
-  border-color: #d1d5db !important;
-  color: #dc2626 !important;
-}
 
 /* Mobile Navigation Menu */
 .mobile-nav-menu {
@@ -2291,13 +2271,24 @@ body {
   }
   
   .mobile-menu-toggle {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    position: absolute !important;
-    left: 1rem !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    border: 1px solid #e5e7eb !important;
+    color: #374151 !important;
+    border-radius: 8px !important;
+    padding: 8px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    margin-right: 8px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  .mobile-menu-toggle:hover {
+    background: #f3f4f6 !important;
+    border-color: #d1d5db !important;
+    color: #dc2626 !important;
   }
   
   .mobile-nav-menu {
@@ -2313,15 +2304,14 @@ body {
   }
   
   .header-logo-title {
-    margin-left: 3rem;
     flex: 1;
+    margin-right: 1rem;
   }
   
   .user-info {
-    gap: 0.5rem;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    gap: 0.5rem;
   }
   
   .user-info span {
@@ -2334,13 +2324,16 @@ body {
   
   .user-info .ant-btn[title="Sign Out"] {
     display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     background: transparent !important;
-    border-color: #e5e7eb !important;
+    border: 1px solid #e5e7eb !important;
     color: #374151 !important;
     min-width: 40px !important;
     height: 40px !important;
     border-radius: 8px !important;
-    margin-right: 0.5rem !important;
+    padding: 0 !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
   }
   
   .user-info .ant-btn[title="Sign Out"]:hover {

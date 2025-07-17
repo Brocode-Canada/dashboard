@@ -2424,22 +2424,24 @@ body {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    background: transparent !important;
-    border: 1px solid #e5e7eb !important;
-    color: #374151 !important;
+    background: #374151 !important;
+    border: 1px solid #1f2937 !important;
+    color: #ffffff !important;
     min-width: 40px !important;
     height: 40px !important;
     border-radius: 8px !important;
     padding: 0 !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
     position: relative !important;
     z-index: 10 !important;
+    font-size: 1.1rem !important;
   }
 
   .user-info .ant-btn[title="Sign Out"]:hover {
-    background: #f3f4f6 !important;
-    border-color: #d1d5db !important;
-    color: #dc2626 !important;
+    background: #1f2937 !important;
+    border-color: #111827 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
   }
 }
 
@@ -2557,11 +2559,18 @@ body {
     justify-content: center !important;
     min-width: 40px !important;
     height: 40px !important;
-    background: transparent !important;
-    border: 1px solid #e5e7eb !important;
-    border-radius: 8px !important;
-    color: #374151 !important;
+    background: #374151 !important;
+    border: 1px solid #1f2937 !important;
+    color: #ffffff !important;
     padding: 0 !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+    font-size: 1.1rem !important;
+  }
+  
+  .navigation .nav-header .user-info .ant-btn[title="Sign Out"]:hover {
+    background: #1f2937 !important;
+    border-color: #111827 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
   }
 }

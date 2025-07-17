@@ -21,7 +21,7 @@ const Navigation = () => {
       <nav className="navigation">
         <div className="nav-header">
           <div className="header-logo-title">
-            <img src="/brocode_logo.png" alt="Brocode Logo" className="brocode-logo" />
+            <img src={process.env.NODE_ENV === 'production' ? '/dashboard/brocode_logo.png' : '/brocode_logo.png'} alt="Brocode Logo" className="brocode-logo" />
             <div>
               <h1 style={{ color: '#222' }}>Brocode Canada</h1>
               <h2 className="admin-dashboard-title" style={{ color: '#222', background: 'none', borderBottom: '3px solid #b91c1c' }}>Admin Dashboard</h2>
@@ -45,7 +45,7 @@ const Navigation = () => {
     <nav className="navigation">
       <div className="nav-header">
         <div className="header-logo-title">
-          <img src="/brocode_logo.png" alt="Brocode Logo" className="brocode-logo" />
+          <img src={process.env.NODE_ENV === 'production' ? '/dashboard/brocode_logo.png' : '/brocode_logo.png'} alt="Brocode Logo" className="brocode-logo" />
       <div>
             <h1 style={{ color: '#222' }}>Brocode Canada</h1>
             <h2 className="admin-dashboard-title" style={{ color: '#222', background: 'none', borderBottom: '3px solid #b91c1c' }}>Admin Dashboard</h2>

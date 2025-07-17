@@ -2313,6 +2313,8 @@ body {
     font-size: 1.2rem !important;
     flex-shrink: 0;
     order: 1;
+    position: relative !important;
+    z-index: 10 !important;
   }
   
   .mobile-menu-toggle:hover {
@@ -2326,82 +2328,96 @@ body {
   }
   
   .nav-header {
-    padding: 0.75rem 1rem;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: nowrap;
-    background: #fff;
-    flex-direction: row;
-    width: 100%;
+    padding: 0.75rem 1rem !important;
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: nowrap !important;
+    background: #fff !important;
+    flex-direction: row !important;
+    width: 100% !important;
+    min-height: 60px !important;
+    box-sizing: border-box !important;
   }
 
   .header-logo-title {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex: 1;
-    min-width: 0;
-    margin: 0;
-    padding: 0;
-    order: 2;
-    margin-left: 0.75rem;
-    margin-right: 0.75rem;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    order: 2 !important;
+    margin-left: 0.75rem !important;
+    margin-right: 0.75rem !important;
+    flex-direction: row !important;
+    gap: 0.5rem !important;
   }
+  
   .header-logo-title .brocode-logo {
-    width: 32px;
-    height: 32px;
-    margin-right: 0.5rem;
-    flex-shrink: 0;
+    width: 32px !important;
+    height: 32px !important;
+    margin-right: 0.5rem !important;
+    flex-shrink: 0 !important;
+    display: block !important;
   }
+  
   .header-titles {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    min-width: 0;
-    flex: 1;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    min-width: 0 !important;
+    flex: 1 !important;
+    gap: 0.1rem !important;
   }
+  
   .header-titles h1 {
-    color: #dc2626;
-    font-size: 1.1rem;
-    font-weight: 800;
-    margin: 0;
-    letter-spacing: -0.5px;
-    line-height: 1.1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    color: #dc2626 !important;
+    font-size: 1.1rem !important;
+    font-weight: 800 !important;
+    margin: 0 !important;
+    letter-spacing: -0.5px !important;
+    line-height: 1.1 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: block !important;
   }
+  
   .header-titles h2 {
-    color: #6b7280;
-    font-size: 0.7rem;
-    font-weight: 500;
-    margin: 0;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    line-height: 1.1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    color: #6b7280 !important;
+    font-size: 0.7rem !important;
+    font-weight: 500 !important;
+    margin: 0 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    line-height: 1.1 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: block !important;
   }
 
   .user-info {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    flex-shrink: 0;
-    order: 3;
-    margin-left: auto;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    flex-shrink: 0 !important;
+    order: 3 !important;
+    margin-left: auto !important;
+    position: relative !important;
+    z-index: 10 !important;
   }
 
   .user-info span {
-    display: none;
+    display: none !important;
   }
 
   .user-info .ant-btn {
-    display: none;
+    display: none !important;
   }
 
   .user-info .ant-btn[title="Sign Out"] {
@@ -2416,6 +2432,8 @@ body {
     border-radius: 8px !important;
     padding: 0 !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+    position: relative !important;
+    z-index: 10 !important;
   }
 
   .user-info .ant-btn[title="Sign Out"]:hover {
@@ -2427,14 +2445,123 @@ body {
 
 @media (max-width: 480px) {
   .header-logo-title .brocode-logo {
-    width: 28px;
-    height: 28px;
-    margin-right: 0.4rem;
+    width: 28px !important;
+    height: 28px !important;
+    margin-right: 0.4rem !important;
   }
   .header-titles h1 {
     font-size: 0.95rem !important;
   }
   .header-titles h2 {
     font-size: 0.6rem !important;
+  }
+}
+
+/* Force mobile header layout - override any conflicting styles */
+@media (max-width: 768px) {
+  .navigation .nav-header {
+    flex-direction: row !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 0.5rem !important;
+    padding: 0.75rem 1rem !important;
+    background: white !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  .navigation .nav-header .mobile-menu-toggle {
+    order: 1 !important;
+    flex-shrink: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    background: transparent !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 8px !important;
+    color: #374151 !important;
+    font-size: 1.2rem !important;
+    cursor: pointer !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  .navigation .nav-header .header-logo-title {
+    order: 2 !important;
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 0.5rem !important;
+    margin: 0 0.75rem !important;
+    min-width: 0 !important;
+  }
+  
+  .navigation .nav-header .header-logo-title .brocode-logo {
+    width: 32px !important;
+    height: 32px !important;
+    flex-shrink: 0 !important;
+    display: block !important;
+  }
+  
+  .navigation .nav-header .header-logo-title .header-titles {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+    gap: 0.1rem !important;
+  }
+  
+  .navigation .nav-header .header-logo-title .header-titles h1 {
+    color: #dc2626 !important;
+    font-size: 1.1rem !important;
+    font-weight: 800 !important;
+    margin: 0 !important;
+    line-height: 1.1 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: block !important;
+  }
+  
+  .navigation .nav-header .header-logo-title .header-titles h2 {
+    color: #6b7280 !important;
+    font-size: 0.7rem !important;
+    font-weight: 500 !important;
+    margin: 0 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    line-height: 1.1 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: block !important;
+  }
+  
+  .navigation .nav-header .user-info {
+    order: 3 !important;
+    flex-shrink: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    margin-left: auto !important;
+  }
+  
+  .navigation .nav-header .user-info .ant-btn[title="Sign Out"] {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 40px !important;
+    height: 40px !important;
+    background: transparent !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 8px !important;
+    color: #374151 !important;
+    padding: 0 !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
   }
 }

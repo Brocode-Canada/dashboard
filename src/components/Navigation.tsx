@@ -20,12 +20,13 @@ export const Navigation: React.FC = () => {
   };
 
   const toggleMobileMenu = () => {
+    console.log('🚀 Mobile menu toggle clicked, current state:', mobileMenuOpen);
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
   if (!user) {
     // Not logged in: show public dashboard with Sign In option for admin features
-    return (
+  return (
       <nav className="navigation">
         <div className="nav-header">
           <div className="header-logo-title">
@@ -70,8 +71,8 @@ export const Navigation: React.FC = () => {
           <Link to="/dashboard/employment">Employment</Link>
           <span style={{ color: '#9ca3af', fontSize: '0.9rem', padding: '0.5rem 1rem', borderLeft: '1px solid #e5e7eb' }}>
             📊 Public Analytics
-          </span>
-        </div>
+                  </span>
+                </div>
       </nav>
     );
   }
@@ -143,12 +144,22 @@ export const Navigation: React.FC = () => {
             className="mobile-menu-toggle"
             onClick={toggleMobileMenu}
             aria-label="Toggle mobile menu"
+            style={{ 
+              background: '#dc2626', 
+              color: 'white', 
+              border: '2px solid #dc2626',
+              borderRadius: '8px',
+              padding: '8px',
+              fontSize: '1.2rem',
+              cursor: 'pointer',
+              boxShadow: '0 2px 8px rgba(220, 38, 38, 0.3)'
+            }}
           >
             {mobileMenuOpen ? <CloseOutlined /> : <MenuOutlined />}
           </button>
         </div>
       </div>
-      
+
       {/* Desktop Navigation Links */}
       <div className="nav-links desktop-nav">
         {/* Public pages - accessible to all authenticated users */}

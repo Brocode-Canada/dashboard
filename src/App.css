@@ -2194,11 +2194,35 @@ body {
   padding: 0.5rem;
   border-radius: 6px;
   transition: all 0.2s ease;
+  z-index: 1001;
+  position: relative;
 }
 
 .mobile-menu-toggle:hover {
   background: #f3f4f6;
   color: #dc2626;
+}
+
+/* Debug styles to ensure burger menu is visible */
+.mobile-menu-toggle {
+  background: #dc2626 !important;
+  border: 2px solid #dc2626 !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: white !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3) !important;
+  margin-left: 8px !important;
+}
+
+.mobile-menu-toggle:hover {
+  background: #b91c1c !important;
+  border-color: #b91c1c !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4) !important;
 }
 
 /* Mobile Navigation Menu */
@@ -2267,7 +2291,9 @@ body {
   }
   
   .mobile-menu-toggle {
-    display: block;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
   }
   
   .mobile-nav-menu {
@@ -2280,6 +2306,8 @@ body {
   
   .user-info {
     gap: 0.5rem;
+    display: flex;
+    align-items: center;
   }
   
   .user-info span {

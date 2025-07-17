@@ -2,74 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from './AuthContext';
 import { firebaseService, type User as FirebaseUserData } from './services/firebaseService';
 import { Table, Select, Button, Popconfirm, message, Tag, Modal, Form, Input, Space, Card, Statistic, Row, Col } from 'antd';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { PlusOutlined, EditOutlined, DeleteOutlined, UserOutlined } from '@ant-design/icons';
 import { useDarkMode } from './hooks/useDarkMode';
-
-// Import Navigation component from App.tsx
-const Navigation = () => {
-  const { user, role, signOut } = useAuth();
-  const navigate = useNavigate();
-
-  const handleSignOut = async () => {
-    await signOut();
-    navigate('/dashboard/signin');
-  };
-
-  if (!user) {
-    return (
-      <nav className="navigation">
-        <div className="nav-header">
-          <div className="header-logo-title">
-            <img src={process.env.NODE_ENV === 'production' ? '/dashboard/brocode_logo.png' : '/brocode_logo.png'} alt="Brocode Logo" className="brocode-logo" />
-            <div>
-              <h1 style={{ color: '#222' }}>Brocode Canada</h1>
-              <h2 className="admin-dashboard-title" style={{ color: '#222', background: 'none', borderBottom: '3px solid #b91c1c' }}>Admin Dashboard</h2>
-            </div>
-          </div>
-          <div className="user-info">
-            <Link to="/signin" className="signout-btn" style={{ background: '#dc2626', color: '#fff', border: 'none' }}>Sign In</Link>
-          </div>
-        </div>
-        <div className="nav-links">
-          <Link to="/overview">Overview</Link>
-          <Link to="/demographics">Demographics</Link>
-          <Link to="/geography">Geography</Link>
-          <Link to="/employment">Employment</Link>
-        </div>
-      </nav>
-    );
-  }
-
-  return (
-    <nav className="navigation">
-      <div className="nav-header">
-        <div className="header-logo-title">
-          <img src={process.env.NODE_ENV === 'production' ? '/dashboard/brocode_logo.png' : '/brocode_logo.png'} alt="Brocode Logo" className="brocode-logo" />
-      <div>
-            <h1 style={{ color: '#222' }}>Brocode Canada</h1>
-            <h2 className="admin-dashboard-title" style={{ color: '#222', background: 'none', borderBottom: '3px solid #b91c1c' }}>Admin Dashboard</h2>
-          </div>
-        </div>
-        <div className="user-info">
-          <span style={{ color: '#222', fontWeight: 600, marginRight: 12 }}>{user.email} ({role})</span>
-          <button onClick={handleSignOut} className="signout-btn">Sign Out</button>
-        </div>
-      </div>
-      <div className="nav-links">
-        <Link to="/overview">Overview</Link>
-        <Link to="/demographics">Demographics</Link>
-        <Link to="/geography">Geography</Link>
-        <Link to="/employment">Employment</Link>
-        {(role === 'admin' || role === 'moderator' || role === 'superadmin') && (
-          <Link to="/members">All Members</Link>
-        )}
-        {(role === 'admin' || role === 'moderator' || role === 'superadmin') && <Link to="/analytics">Analytics</Link>}
-        {(role === 'admin' || role === 'superadmin') && <Link to="/user-management">User Management</Link>}
-      </div>
-    </nav>
-  );
-};
+import { Navigation } from './components/Navigation';
 
 const roleOptions = [
   { value: 'superadmin', label: 'Super Admin' },

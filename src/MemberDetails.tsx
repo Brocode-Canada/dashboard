@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Card, Descriptions, Button, message, Tag } from 'antd';
 import { UserOutlined, MailOutlined, PhoneOutlined, EnvironmentOutlined, CalendarOutlined, BankOutlined, TeamOutlined } from '@ant-design/icons';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from './firebase';
-import { useAuth } from './AuthContext';
+
 import { useDarkMode } from './hooks/useDarkMode';
+import { Navigation } from './components/Navigation';
 
 interface MemberData {
   id: string;
@@ -27,133 +28,6 @@ interface MemberData {
   'What do you hope to gain from joining Bro Code Canada? (Select all that apply) ': string;
   created_at: string;
 }
-
-// Navigation Component
-const Navigation = () => {
-  const { user, role, signOut } = useAuth();
-  const { isDarkMode, toggleDarkMode } = useDarkMode();
-  const navigate = useNavigate();
-
-  const handleSignOut = async () => {
-    await signOut();
-    navigate('signin');
-  };
-
-  if (!user) {
-    return (
-      <nav className="navigation">
-        <div className="nav-header">
-          <div className="header-logo-title">
-            <img src={process.env.NODE_ENV === 'production' ? '/dashboard/brocode_logo.png' : '/brocode_logo.png'} alt="Brocode Logo" className="brocode-logo" />
-            <div style={{ marginLeft: '1rem' }}>
-              <h1 style={{ 
-                color: '#dc2626', 
-                fontSize: '2rem', 
-                fontWeight: '800', 
-                margin: 0,
-                textShadow: '0 2px 4px rgba(220, 38, 38, 0.2)',
-                letterSpacing: '-0.5px'
-              }}>
-                BroCode Canada
-              </h1>
-              <h2 style={{ 
-                color: '#6b7280', 
-                fontSize: '1rem', 
-                fontWeight: '500', 
-                margin: '0.25rem 0 0 0',
-                textTransform: 'uppercase',
-                letterSpacing: '1px'
-              }}>
-                Management Portal
-              </h2>
-            </div>
-          </div>
-          <div className="user-info">
-            <button 
-              onClick={toggleDarkMode} 
-              className="dark-mode-toggle"
-              title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
-            >
-              {isDarkMode ? '☀️' : '🌙'}
-            </button>
-            <Link to="/dashboard/signin" className="signout-btn" style={{ background: '#dc2626', color: '#fff', border: 'none' }}>Sign In</Link>
-          </div>
-        </div>
-        <div className="nav-links">
-          <Link to="/dashboard/overview">Overview</Link>
-          <Link to="/dashboard/demographics">Demographics</Link>
-          <Link to="/dashboard/geography">Geography</Link>
-          <Link to="/dashboard/employment">Employment</Link>
-        </div>
-      </nav>
-    );
-  }
-
-  return (
-    <nav className="navigation">
-      <div className="nav-header">
-        <div className="header-logo-title">
-          <img src={process.env.NODE_ENV === 'production' ? '/dashboard/brocode_logo.png' : '/brocode_logo.png'} alt="Brocode Logo" className="brocode-logo" />
-          <div style={{ marginLeft: '1rem' }}>
-            <h1 style={{ 
-              color: '#dc2626', 
-              fontSize: '2rem', 
-              fontWeight: '800', 
-              margin: 0,
-              textShadow: '0 2px 4px rgba(220, 38, 38, 0.2)',
-              letterSpacing: '-0.5px'
-            }}>
-              BroCode Canada
-            </h1>
-            <h2 style={{ 
-              color: '#6b7280', 
-              fontSize: '1rem', 
-              fontWeight: '500', 
-              margin: '0.25rem 0 0 0',
-              textTransform: 'uppercase',
-              letterSpacing: '1px'
-            }}>
-              Management Portal
-            </h2>
-          </div>
-        </div>
-        <div className="user-info">
-          <span style={{ 
-            color: '#374151', 
-            fontWeight: '600', 
-            marginRight: '12px',
-            fontSize: '0.9rem',
-            background: '#f3f4f6',
-            padding: '0.5rem 0.75rem',
-            borderRadius: '6px',
-            border: '1px solid #e5e7eb'
-          }}>
-            {user.email} ({role})
-          </span>
-          <button 
-            onClick={toggleDarkMode} 
-            className="dark-mode-toggle"
-            title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
-          >
-            {isDarkMode ? '☀️' : '🌙'}
-          </button>
-          <button onClick={handleSignOut} className="signout-btn">Sign Out</button>
-        </div>
-      </div>
-      <div className="nav-links">
-        <Link to="/dashboard/overview">Overview</Link>
-        <Link to="/dashboard/demographics">Demographics</Link>
-        <Link to="/dashboard/geography">Geography</Link>
-        <Link to="/dashboard/employment">Employment</Link>
-        {(role === 'admin' || role === 'moderator' || role === 'superadmin') && (
-          <Link to="/dashboard/members">All Members</Link>
-        )}
-        {(role === 'admin' || role === 'moderator' || role === 'superadmin') && <Link to="/dashboard/analytics">Analytics</Link>}
-        {(role === 'admin' || role === 'superadmin') && <Link to="/dashboard/user-management">User Management</Link>}
-      </div>
-    </nav>
-  );
-};
 
 const MemberDetails: React.FC = () => {
   const { memberId } = useParams<{ memberId: string }>();

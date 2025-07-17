@@ -3,7 +3,7 @@ import { useAuth } from './AuthContext';
 import { firebaseService, type User as FirebaseUserData } from './services/firebaseService';
 import { Table, Select, Button, Popconfirm, message, Tag, Modal, Form, Input, Space, Card, Statistic, Row, Col } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { PlusOutlined, EditOutlined, DeleteOutlined, UserOutlined } from '@ant-design/icons';
+import { PlusOutlined, EditOutlined, DeleteOutlined, UserOutlined, KeyOutlined } from '@ant-design/icons';
 import { useDarkMode } from './hooks/useDarkMode';
 import { Navigation } from './components/Navigation';
 
@@ -36,9 +36,12 @@ const UserManagement: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
+  const [passwordModalVisible, setPasswordModalVisible] = useState(false);
+  const [changingPasswordFor, setChangingPasswordFor] = useState<FirebaseUserData | null>(null);
   const [editingUser, setEditingUser] = useState<FirebaseUserData | null>(null);
   const [createForm] = Form.useForm();
   const [editForm] = Form.useForm();
+  const [passwordForm] = Form.useForm();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
 
   useEffect(() => {
@@ -185,6 +188,37 @@ const UserManagement: React.FC = () => {
     setEditModalVisible(true);
   };
 
+  const openPasswordModal = (user: FirebaseUserData) => {
+    setChangingPasswordFor(user);
+    passwordForm.resetFields();
+    setPasswordModalVisible(true);
+  };
+
+  const handlePasswordChange = async (values: { newPassword: string; confirmPassword: string }) => {
+    try {
+      if (values.newPassword !== values.confirmPassword) {
+        message.error('Passwords do not match');
+        return;
+      }
+
+      if (!changingPasswordFor?.uid) {
+        message.error('User not found');
+        return;
+      }
+
+      // Call Firebase service to update password
+      await firebaseService.updateUserPassword(changingPasswordFor.uid, values.newPassword);
+      
+      message.success('Password updated successfully');
+      setPasswordModalVisible(false);
+      setChangingPasswordFor(null);
+      passwordForm.resetFields();
+    } catch (error) {
+      console.error('Failed to update password:', error);
+      message.error('Failed to update password');
+    }
+  };
+
   const columns = [
     {
       title: 'Name',
@@ -259,6 +293,15 @@ const UserManagement: React.FC = () => {
             onClick={() => openEditModal(record)}
           >
             Edit
+          </Button>
+          <Button
+            type="default"
+            icon={<KeyOutlined />}
+            size="small"
+            onClick={() => openPasswordModal(record)}
+            title="Change Password"
+          >
+            Password
           </Button>
           <Popconfirm
             title={
@@ -601,6 +644,69 @@ const UserManagement: React.FC = () => {
               <Button onClick={() => {
                 setEditModalVisible(false);
                 setEditingUser(null);
+              }}>
+                Cancel
+              </Button>
+            </Space>
+          </Form.Item>
+        </Form>
+      </Modal>
+
+      {/* Password Change Modal */}
+      <Modal
+        title={`Change Password for ${changingPasswordFor?.firstName} ${changingPasswordFor?.lastName}`}
+        open={passwordModalVisible}
+        onCancel={() => {
+          setPasswordModalVisible(false);
+          setChangingPasswordFor(null);
+          passwordForm.resetFields();
+        }}
+        footer={null}
+        width={500}
+      >
+        <Form
+          form={passwordForm}
+          layout="vertical"
+          onFinish={handlePasswordChange}
+        >
+          <Form.Item
+            name="newPassword"
+            label="New Password"
+            rules={[
+              { required: true, message: 'Please enter new password' },
+              { min: 6, message: 'Password must be at least 6 characters' }
+            ]}
+          >
+            <Input.Password placeholder="Enter new password" />
+          </Form.Item>
+
+          <Form.Item
+            name="confirmPassword"
+            label="Confirm Password"
+            rules={[
+              { required: true, message: 'Please confirm password' },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue('newPassword') === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error('Passwords do not match'));
+                },
+              }),
+            ]}
+          >
+            <Input.Password placeholder="Confirm new password" />
+          </Form.Item>
+
+          <Form.Item>
+            <Space>
+              <Button type="primary" htmlType="submit" style={{ background: '#dc2626', borderColor: '#dc2626' }}>
+                Update Password
+              </Button>
+              <Button onClick={() => {
+                setPasswordModalVisible(false);
+                setChangingPasswordFor(null);
+                passwordForm.resetFields();
               }}>
                 Cancel
               </Button>

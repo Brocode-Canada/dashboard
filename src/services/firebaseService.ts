@@ -16,6 +16,7 @@ import {
   createUserWithEmailAndPassword, 
   signInWithEmailAndPassword, 
   signOut,
+  updatePassword,
   deleteUser as deleteAuthUser
 } from 'firebase/auth';
 import type { User as FirebaseUser } from 'firebase/auth';
@@ -282,6 +283,33 @@ export class FirebaseService {
       })) as User[];
     } catch (error) {
       console.error('Error getting users by status:', error);
+      throw error;
+    }
+  }
+
+  async updateUserPassword(uid: string, newPassword: string): Promise<void> {
+    try {
+      // Note: This requires the Firebase Admin SDK for server-side password updates
+      // For client-side, we can only update the current user's password
+      // This is a limitation of Firebase Auth client SDK
+      
+      // Get the current user
+      const currentUser = auth.currentUser;
+      if (!currentUser) {
+        throw new Error('No user is currently signed in');
+      }
+
+      // Check if the current user is trying to update their own password
+      if (currentUser.uid === uid) {
+        // Update current user's password
+        await updatePassword(currentUser, newPassword);
+      } else {
+        // For updating other users' passwords, we need the Admin SDK
+        // For now, we'll throw an error and suggest using the Admin SDK
+        throw new Error('To update other users\' passwords, please use the Firebase Admin SDK or contact the system administrator');
+      }
+    } catch (error) {
+      console.error('Error updating user password:', error);
       throw error;
     }
   }

@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Button } from 'antd';
+import { KeyOutlined } from '@ant-design/icons';
 import { useAuth } from '../AuthContext';
 import { useDarkMode } from '../hooks/useDarkMode';
+import { ChangePassword } from './ChangePassword';
 
 export const Navigation: React.FC = () => {
   const { user, role, signOut } = useAuth();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const navigate = useNavigate();
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
 
   console.log('🚀 Navigation: Current user role:', role);
   console.log('🚀 Navigation: User authenticated:', !!user);
@@ -128,6 +132,21 @@ export const Navigation: React.FC = () => {
           >
             {isDarkMode ? '☀️' : '🌙'}
           </button>
+          <Button
+            type="default"
+            icon={<KeyOutlined />}
+            size="small"
+            onClick={() => setShowPasswordModal(true)}
+            style={{ 
+              background: 'transparent', 
+              border: '1px solid #e5e7eb',
+              color: '#374151',
+              marginRight: '8px'
+            }}
+            title="Change Password"
+          >
+            Password
+          </Button>
           <button onClick={handleSignOut} className="signout-btn">Sign Out</button>
         </div>
       </div>
@@ -159,6 +178,12 @@ export const Navigation: React.FC = () => {
           Debug: {user?.email} ({role})
         </span>
       </div>
+      
+      {/* Password Change Modal */}
+      <ChangePassword 
+        visible={showPasswordModal} 
+        onCancel={() => setShowPasswordModal(false)} 
+      />
     </nav>
   );
 }; 

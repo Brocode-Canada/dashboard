@@ -2215,7 +2215,8 @@ body {
   color: white !important;
   border-radius: 8px !important;
   box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3) !important;
-  margin-left: 8px !important;
+  margin-left: 0 !important;
+  z-index: 1002 !important;
 }
 
 .mobile-menu-toggle:hover {
@@ -2294,6 +2295,10 @@ body {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
+    position: absolute !important;
+    left: 1rem !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
   }
   
   .mobile-nav-menu {
@@ -2302,12 +2307,22 @@ body {
   
   .nav-header {
     padding: 0.75rem 1rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .header-logo-title {
+    margin-left: 3rem;
+    flex: 1;
   }
   
   .user-info {
     gap: 0.5rem;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
   }
   
   .user-info span {
@@ -2318,8 +2333,19 @@ body {
     display: none;
   }
   
-  .signout-btn {
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
+  .user-info .ant-btn[title="Sign Out"] {
+    display: flex !important;
+    background: #dc2626 !important;
+    border-color: #dc2626 !important;
+    color: white !important;
+    min-width: 40px !important;
+    height: 40px !important;
+    border-radius: 8px !important;
+    margin-right: 0.5rem !important;
+  }
+  
+  .user-info .ant-btn[title="Sign Out"]:hover {
+    background: #b91c1c !important;
+    border-color: #b91c1c !important;
   }
 }

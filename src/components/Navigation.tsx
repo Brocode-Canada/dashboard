@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button } from 'antd';
-import { KeyOutlined, MenuOutlined, CloseOutlined } from '@ant-design/icons';
+import { Button, Modal } from 'antd';
+import { KeyOutlined, MenuOutlined, CloseOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useAuth } from '../AuthContext';
 import { ChangePassword } from './ChangePassword';
 
@@ -9,6 +9,7 @@ export const Navigation: React.FC = () => {
   const { user, role, signOut } = useAuth();
   const navigate = useNavigate();
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [showSignOutModal, setShowSignOutModal] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   console.log('🚀 Navigation: Current user role:', role);
@@ -17,6 +18,7 @@ export const Navigation: React.FC = () => {
   const handleSignOut = async () => {
     await signOut();
     navigate('/dashboard/signin');
+    setShowSignOutModal(false);
   };
 
   const toggleMobileMenu = () => {
@@ -137,7 +139,18 @@ export const Navigation: React.FC = () => {
           >
             Password
           </Button>
-          <button onClick={handleSignOut} className="signout-btn">Sign Out</button>
+          <Button
+            type="default"
+            icon={<LogoutOutlined />}
+            size="small"
+            onClick={() => setShowSignOutModal(true)}
+            style={{ 
+              background: 'transparent', 
+              border: '1px solid #e5e7eb',
+              color: '#374151'
+            }}
+            title="Sign Out"
+          />
           
           {/* Mobile Menu Toggle */}
           <button 
@@ -211,6 +224,24 @@ export const Navigation: React.FC = () => {
         visible={showPasswordModal} 
         onCancel={() => setShowPasswordModal(false)} 
       />
+
+      {/* Sign Out Confirmation Modal */}
+      <Modal
+        title={
+          <span>
+            <LogoutOutlined style={{ marginRight: '8px', color: '#dc2626' }} />
+            Sign Out
+          </span>
+        }
+        open={showSignOutModal}
+        onOk={handleSignOut}
+        onCancel={() => setShowSignOutModal(false)}
+        okText="Sign Out"
+        cancelText="Cancel"
+        okButtonProps={{ danger: true }}
+      >
+        <p>Are you sure you want to sign out?</p>
+      </Modal>
     </nav>
   );
 }; 

@@ -40,10 +40,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const userDataFromFirestore = await firebaseService.getUserById(firebaseUser.uid);
           if (userDataFromFirestore) {
             console.log('🚀 AuthProvider: User data fetched, role:', userDataFromFirestore.role);
+            console.log('🚀 AuthProvider: User data:', userDataFromFirestore);
             setUserData(userDataFromFirestore);
             setRole(userDataFromFirestore.role as UserRole);
           } else {
             console.log('🚀 AuthProvider: No user data found in Firestore');
+            console.log('🚀 AuthProvider: Setting default role to "user"');
+            setRole('user');
           }
         } catch (error) {
           console.error('❌ AuthProvider: Error fetching user data:', error);
@@ -72,8 +75,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Fetch user data from Firestore
       const userDataFromFirestore = await firebaseService.getUserById(firebaseUser.uid);
       if (userDataFromFirestore) {
+        console.log('🚀 AuthProvider: Login - User data fetched:', userDataFromFirestore);
+        console.log('🚀 AuthProvider: Login - Setting role to:', userDataFromFirestore.role);
         setUserData(userDataFromFirestore);
         setRole(userDataFromFirestore.role as UserRole);
+      } else {
+        console.log('🚀 AuthProvider: Login - No user data found, setting default role');
+        setRole('user');
       }
     } catch (error) {
       console.error('Login error:', error);

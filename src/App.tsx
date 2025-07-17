@@ -28,14 +28,22 @@ const DefaultDashboard = () => {
   return <OverviewPage />;
 };
 
-// Test component to verify routing
+// Test component to verify routing and role-based access
 const TestPage = () => {
+  const { user, role } = useAuth();
   console.log('🚀 TestPage: Component rendered');
+  console.log('🚀 TestPage: User role:', role);
+  console.log('🚀 TestPage: User:', user?.email);
+  
   return (
     <div style={{ padding: '2rem', textAlign: 'center' }}>
       <h1>🧪 Test Page</h1>
       <p>If you can see this, routing is working!</p>
       <p>Current time: {new Date().toLocaleString()}</p>
+      <p>User: {user?.email}</p>
+      <p>Role: {role}</p>
+      <p>Admin access: {(role === 'admin' || role === 'moderator' || role === 'superadmin') ? 'Yes' : 'No'}</p>
+      <p>Super admin access: {(role === 'admin' || role === 'superadmin') ? 'Yes' : 'No'}</p>
     </div>
   );
 };
@@ -227,6 +235,9 @@ function Navigation() {
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const navigate = useNavigate();
 
+  console.log('🚀 Navigation: Current user role:', role);
+  console.log('🚀 Navigation: User authenticated:', !!user);
+
   const handleSignOut = async () => {
     await signOut();
     navigate('/dashboard/signin');
@@ -337,22 +348,33 @@ function Navigation() {
           <button onClick={handleSignOut} className="signout-btn">Sign Out</button>
         </div>
       </div>
-              <div className="nav-links">
+        <div className="nav-links">
+          {/* Public pages - accessible to all authenticated users */}
           <Link to="/dashboard/overview">Overview</Link>
           <Link to="/dashboard/demographics">Demographics</Link>
           <Link to="/dashboard/geography">Geography</Link>
           <Link to="/dashboard/employment">Employment</Link>
-          <span style={{ color: '#9ca3af', fontSize: '0.9rem', padding: '0.5rem 1rem', borderLeft: '1px solid #e5e7eb' }}>
-            🔐 Admin Features
-          </span>
+          
+          {/* Admin-only pages - only show for admin roles */}
           {(role === 'admin' || role === 'moderator' || role === 'superadmin') && (
-            <Link to="/dashboard/members">All Members</Link>
+            <>
+              <span style={{ color: '#9ca3af', fontSize: '0.9rem', padding: '0.5rem 1rem', borderLeft: '1px solid #e5e7eb' }}>
+                🔐 Admin Features (Role: {role})
+              </span>
+              <Link to="/dashboard/members">All Members</Link>
+              <Link to="/dashboard/analytics">Analytics</Link>
+            </>
           )}
-          {(role === 'admin' || role === 'moderator' || role === 'superadmin') && <Link to="/dashboard/analytics">Analytics</Link>}
-          {/* Temporarily commented out to fix main page
-          {(role === 'admin' || role === 'moderator') && <Link to="/advanced-analytics">Advanced Analytics</Link>}
-          */}
-          {(role === 'admin' || role === 'superadmin') && <Link to="/dashboard/user-management">User Management</Link>}
+          
+          {/* Super admin only pages */}
+          {(role === 'admin' || role === 'superadmin') && (
+            <Link to="/dashboard/user-management">User Management</Link>
+          )}
+          
+          {/* Debug info - remove this later */}
+          <span style={{ color: '#6b7280', fontSize: '0.8rem', padding: '0.5rem 1rem', borderLeft: '1px solid #e5e7eb' }}>
+            Debug: {user?.email} ({role})
+          </span>
         </div>
     </nav>
   );
@@ -1599,6 +1621,10 @@ const AnalyticsPage = () => {
 // Role-based route protection for admin features
 const RequireAuth = ({ allowedRoles }: { allowedRoles: UserRole[] }) => {
   const { user, role, loading } = useAuth();
+  
+  console.log('🚀 RequireAuth: Checking access for roles:', allowedRoles);
+  console.log('🚀 RequireAuth: Current user role:', role);
+  console.log('🚀 RequireAuth: User authenticated:', !!user);
   if (loading) return (
     <div style={{
       display: 'flex',

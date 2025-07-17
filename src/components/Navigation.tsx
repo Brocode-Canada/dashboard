@@ -158,14 +158,14 @@ export const Navigation: React.FC = () => {
             onClick={toggleMobileMenu}
             aria-label="Toggle mobile menu"
             style={{ 
-              background: '#dc2626', 
-              color: 'white', 
-              border: '2px solid #dc2626',
+              background: 'transparent', 
+              color: '#374151', 
+              border: '1px solid #e5e7eb',
               borderRadius: '8px',
               padding: '8px',
               fontSize: '1.2rem',
               cursor: 'pointer',
-              boxShadow: '0 2px 8px rgba(220, 38, 38, 0.3)'
+              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
             }}
           >
             {mobileMenuOpen ? <CloseOutlined /> : <MenuOutlined />}
@@ -182,7 +182,7 @@ export const Navigation: React.FC = () => {
         <Link to="/dashboard/employment">Employment</Link>
         
         {/* Admin-only pages - only show for admin roles */}
-        {(role === 'admin' || role === 'moderator' || role === 'superadmin') && (
+        {(role === 'admin' || role === 'superadmin') && (
           <>
             <Link to="/dashboard/members">All Members</Link>
             <Link to="/dashboard/analytics">Analytics</Link>
@@ -205,7 +205,7 @@ export const Navigation: React.FC = () => {
           <Link to="/dashboard/employment" onClick={() => setMobileMenuOpen(false)}>Employment</Link>
           
           {/* Admin-only pages */}
-          {(role === 'admin' || role === 'moderator' || role === 'superadmin') && (
+          {(role === 'admin' || role === 'superadmin') && (
             <>
               <Link to="/dashboard/members" onClick={() => setMobileMenuOpen(false)}>All Members</Link>
               <Link to="/dashboard/analytics" onClick={() => setMobileMenuOpen(false)}>Analytics</Link>

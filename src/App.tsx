@@ -15,7 +15,7 @@ import { Navigation } from './components/Navigation';
 
 // import { AdvancedAnalytics } from './components/AdvancedAnalytics';
 
-type UserRole = 'superadmin' | 'admin' | 'moderator' | 'user';
+type UserRole = 'superadmin' | 'admin' | 'user';
 
 const COLORS = ['#dc2626', '#b91c1c', '#ef4444', '#f87171', '#fca5a5', '#fecaca', '#fef2f2', '#fee2e2', '#fecaca', '#fca5a5'];
 
@@ -39,7 +39,7 @@ const TestPage = () => {
       <p>Current time: {new Date().toLocaleString()}</p>
       <p>User: {user?.email}</p>
       <p>Role: {role}</p>
-      <p>Admin access: {(role === 'admin' || role === 'moderator' || role === 'superadmin') ? 'Yes' : 'No'}</p>
+      <p>Admin access: {(role === 'admin' || role === 'superadmin') ? 'Yes' : 'No'}</p>
       <p>Super admin access: {(role === 'admin' || role === 'superadmin') ? 'Yes' : 'No'}</p>
     </div>
   );
@@ -1531,16 +1531,16 @@ function DashboardRoutes() {
       <Route path="employment" element={<EmploymentPage />} />
       
       {/* Admin-only pages - require authentication */}
-      <Route path="members" element={<RequireAuth allowedRoles={['admin', 'moderator', 'superadmin']} />}>
+      <Route path="members" element={<RequireAuth allowedRoles={['admin', 'superadmin']} />}>
         <Route path="" element={<MembersPage />} />
       </Route>
-      <Route path="analytics" element={<RequireAuth allowedRoles={['admin', 'moderator', 'superadmin']} />}>
+      <Route path="analytics" element={<RequireAuth allowedRoles={['admin', 'superadmin']} />}>
         <Route path="" element={<AnalyticsPage />} />
       </Route>
       <Route path="user-management" element={<RequireAuth allowedRoles={['superadmin']} />}>
         <Route path="" element={<UserManagement />} />
       </Route>
-      <Route path="member-details/:memberId" element={<RequireAuth allowedRoles={['admin', 'moderator', 'superadmin']} />}>
+      <Route path="member-details/:memberId" element={<RequireAuth allowedRoles={['admin', 'superadmin']} />}>
         <Route path="" element={<MemberDetails />} />
       </Route>
       

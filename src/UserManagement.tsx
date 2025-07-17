@@ -8,10 +8,9 @@ import { PlusOutlined, EditOutlined, DeleteOutlined, UserOutlined, KeyOutlined }
 import { Navigation } from './components/Navigation';
 
 const roleOptions = [
-  { value: 'superadmin', label: 'Super Admin' },
-  { value: 'admin', label: 'Admin' },
-  { value: 'moderator', label: 'Moderator' },
   { value: 'user', label: 'User' },
+  { value: 'admin', label: 'Admin' },
+  { value: 'superadmin', label: 'Super Admin' }
 ];
 
 const statusOptions = [
@@ -27,31 +26,24 @@ const UserManagement: React.FC = () => {
   const userRole = currentRole;
   
   // Helper function to check if user can delete another user
-  const canDeleteUser = (targetRole: string, currentRole: string) => {
-    if (targetRole === 'superadmin') return currentRole === 'superadmin';
-    if (targetRole === 'admin') return currentRole === 'superadmin';
-    return currentRole === 'superadmin' || currentRole === 'admin'; // Can delete regular users and moderators
+  const canDeleteUser = (currentRole: string, targetRole: string) => {
+    return currentRole === 'superadmin' || currentRole === 'admin'; // Can delete regular users
   };
 
   // Helper function to check if user can edit another user
-  const canEditUser = (targetRole: string, currentRole: string) => {
-    if (targetRole === 'superadmin') return currentRole === 'superadmin';
-    if (targetRole === 'admin') return currentRole === 'superadmin';
-    return currentRole === 'superadmin' || currentRole === 'admin'; // Can edit regular users and moderators
+  const canEditUser = (currentRole: string, targetRole: string) => {
+    return currentRole === 'superadmin' || currentRole === 'admin'; // Can edit regular users
   };
 
   // Helper function to check if user can change role of another user
-  const canChangeRole = (targetRole: string, newRole: string, currentRole: string) => {
-    // Superadmins can change any role
-    if (currentRole === 'superadmin') return true;
-    
-    // Admins can only change roles to moderator or user, and only for users/moderators
-    if (currentRole === 'admin') {
-      if (targetRole === 'superadmin' || targetRole === 'admin') return false;
-      if (newRole === 'superadmin' || newRole === 'admin') return false;
-      return true;
+  const canChangeRole = (currentRole: string, targetRole: string, newRole: string) => {
+    if (currentRole === 'superadmin') {
+      return true; // Superadmin can change any role
     }
-    
+    if (currentRole === 'admin') {
+      // Admins can only change roles to admin or user, and only for users
+      return targetRole === 'user' && (newRole === 'admin' || newRole === 'user');
+    }
     return false;
   };
 
@@ -95,12 +87,12 @@ const UserManagement: React.FC = () => {
 
   const handleRoleChange = async (uid: string, newRole: string) => {
     try {
-      await firebaseService.updateUser(uid, { role: newRole as 'superadmin' | 'admin' | 'moderator' | 'user' });
-      setUsers(users => users.map(u => u.uid === uid ? { ...u, role: newRole as 'superadmin' | 'admin' | 'moderator' | 'user' } : u));
-      message.success('Role updated successfully');
+      await firebaseService.updateUser(uid, { role: newRole as 'superadmin' | 'admin' | 'user' });
+      setUsers(users => users.map(u => u.uid === uid ? { ...u, role: newRole as 'superadmin' | 'admin' | 'user' } : u));
+      message.success('User role updated successfully');
     } catch (error) {
-      console.error('Failed to update role:', error);
-      message.error('Failed to update role');
+      console.error('Error updating user role:', error);
+      message.error('Failed to update user role');
     }
   };
 
@@ -307,7 +299,7 @@ const UserManagement: React.FC = () => {
         <Select
           value={record.role}
           onChange={(val) => {
-            if (canChangeRole(record.role, val, currentRole || '')) {
+            if (canChangeRole(currentRole || '', record.role, val)) {
               handleRoleChange(record.uid!, val);
             }
           }}
@@ -340,9 +332,9 @@ const UserManagement: React.FC = () => {
             icon={<EditOutlined />}
             size="small"
             onClick={() => openEditModal(record)}
-            disabled={!canEditUser(record.role, currentRole || '')}
+            disabled={!canEditUser(currentRole || '', record.role)}
             title={
-              !canEditUser(record.role, currentRole || '')
+              !canEditUser(currentRole || '', record.role)
                 ? `You don't have permission to edit ${record.role}s`
                 : "Edit user"
             }
@@ -365,9 +357,9 @@ const UserManagement: React.FC = () => {
                 ? "You cannot delete yourself"
                 : record.role === 'superadmin'
                   ? "Superadmins cannot be deleted by anyone, including themselves."
-                  : record.role === 'admin' && !canDeleteUser(record.role, userRole)
+                  : record.role === 'admin' && !canDeleteUser(currentRole || '', record.role)
                     ? "Only superadmins can delete admins."
-                    : !canDeleteUser(record.role, userRole)
+                    : !canDeleteUser(currentRole || '', record.role)
                       ? "You don't have permission to delete this user."
                       : "Are you sure to delete this user?"
             }
@@ -380,7 +372,7 @@ const UserManagement: React.FC = () => {
               icon={<DeleteOutlined />}
               disabled={
                 record.uid === currentUser?.uid ||
-                !canDeleteUser(record.role, userRole)
+                !canDeleteUser(currentRole || '', record.role)
               }
               size="small"
               title={
@@ -388,9 +380,9 @@ const UserManagement: React.FC = () => {
                   ? "You cannot delete yourself"
                   : record.role === 'superadmin'
                     ? "Superadmins cannot be deleted by anyone, including themselves."
-                    : record.role === 'admin' && !canDeleteUser(record.role, userRole)
+                    : record.role === 'admin' && !canDeleteUser(currentRole || '', record.role)
                       ? "Only superadmins can delete admins."
-                      : !canDeleteUser(record.role, userRole)
+                      : !canDeleteUser(currentRole || '', record.role)
                         ? "You don't have permission to delete this user."
                         : "Delete user"
               }

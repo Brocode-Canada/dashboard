@@ -56,12 +56,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           
           // Temporary: Assign roles based on email for testing
           if (firebaseUser.email) {
-            if (firebaseUser.email.includes('admin') || firebaseUser.email.includes('super')) {
-              console.log('🚀 AuthProvider: Temporary admin role assignment for:', firebaseUser.email);
+            if (firebaseUser.email.includes('super')) {
+              console.log('🚀 AuthProvider: Temporary superadmin role assignment for:', firebaseUser.email);
               setRole('superadmin');
-            } else if (firebaseUser.email.includes('moderator')) {
-              console.log('🚀 AuthProvider: Temporary moderator role assignment for:', firebaseUser.email);
-              setRole('moderator');
+            } else if (firebaseUser.email.includes('admin')) {
+              console.log('🚀 AuthProvider: Temporary admin role assignment for:', firebaseUser.email);
+              setRole('admin');
+            } else {
+              console.log('🚀 AuthProvider: Default user role assignment for:', firebaseUser.email);
+              setRole('user');
             }
           }
         }

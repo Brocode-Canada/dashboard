@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, Modal } from 'antd';
-import { KeyOutlined, MenuOutlined, CloseOutlined, LogoutOutlined } from '@ant-design/icons';
+import { MenuOutlined, CloseOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useAuth } from '../AuthContext';
 import { ChangePassword } from './ChangePassword';
 
@@ -82,63 +82,28 @@ export const Navigation: React.FC = () => {
   return (
     <nav className="navigation">
       <div className="nav-header">
+        {/* Burger menu on the left */}
+        <button 
+          className="mobile-menu-toggle"
+          onClick={toggleMobileMenu}
+          aria-label="Toggle mobile menu"
+        >
+          {mobileMenuOpen ? <CloseOutlined /> : <MenuOutlined />}
+        </button>
+        {/* Logo and titles in the center */}
         <div className="header-logo-title">
           <img 
             src={process.env.NODE_ENV === 'production' ? '/dashboard/brocode_logo.png' : '/brocode_logo.png'} 
             alt="Brocode Logo" 
             className="brocode-logo" 
           />
-          <div style={{ marginLeft: '1rem' }}>
-            <h1 style={{ 
-              color: '#dc2626', 
-              fontSize: '2rem', 
-              fontWeight: '800', 
-              margin: 0,
-              textShadow: '0 2px 4px rgba(220, 38, 38, 0.2)',
-              letterSpacing: '-0.5px'
-            }}>
-              BroCode Canada
-            </h1>
-            <h2 style={{ 
-              color: '#6b7280', 
-              fontSize: '1rem', 
-              fontWeight: '500', 
-              margin: '0.25rem 0 0 0',
-              textTransform: 'uppercase',
-              letterSpacing: '1px'
-            }}>
-              Admin Portal
-            </h2>
+          <div className="header-titles">
+            <h1>BroCode Canada</h1>
+            <h2>Admin Portal</h2>
           </div>
         </div>
+        {/* Sign out button on the right */}
         <div className="user-info">
-          <span style={{ 
-            color: '#374151', 
-            fontWeight: '600', 
-            marginRight: '12px',
-            fontSize: '0.9rem',
-            background: '#f3f4f6',
-            padding: '0.5rem 0.75rem',
-            borderRadius: '6px',
-            border: '1px solid #e5e7eb'
-          }}>
-            {user.email} ({role})
-          </span>
-          <Button
-            type="default"
-            icon={<KeyOutlined />}
-            size="small"
-            onClick={() => setShowPasswordModal(true)}
-            style={{ 
-              background: 'transparent', 
-              border: '1px solid #e5e7eb',
-              color: '#374151',
-              marginRight: '8px'
-            }}
-            title="Change Password"
-          >
-            Password
-          </Button>
           <Button
             type="default"
             icon={<LogoutOutlined />}
@@ -151,15 +116,6 @@ export const Navigation: React.FC = () => {
             }}
             title="Sign Out"
           />
-          
-          {/* Mobile Menu Toggle */}
-          <button 
-            className="mobile-menu-toggle"
-            onClick={toggleMobileMenu}
-            aria-label="Toggle mobile menu"
-          >
-            {mobileMenuOpen ? <CloseOutlined /> : <MenuOutlined />}
-          </button>
         </div>
       </div>
 
@@ -170,7 +126,6 @@ export const Navigation: React.FC = () => {
         <Link to="/dashboard/demographics">Demographics</Link>
         <Link to="/dashboard/geography">Geography</Link>
         <Link to="/dashboard/employment">Employment</Link>
-        
         {/* Admin-only pages - only show for admin roles */}
         {(role === 'admin' || role === 'superadmin') && (
           <>
@@ -178,38 +133,32 @@ export const Navigation: React.FC = () => {
             <Link to="/dashboard/analytics">Analytics</Link>
           </>
         )}
-        
         {/* Super admin only pages */}
         {role === 'superadmin' && (
           <Link to="/dashboard/user-management">User Management</Link>
         )}
       </div>
 
-      {/* Mobile Navigation Menu */}
-      <div className={`mobile-nav-menu ${mobileMenuOpen ? 'open' : ''}`}>
-        <div className="mobile-nav-links">
-          {/* Public pages */}
+      {/* Mobile Navigation Menu (drawer) - only links */}
+      <div className={`mobile-nav-menu ${mobileMenuOpen ? 'open' : ''}`} onClick={() => setMobileMenuOpen(false)}>
+        <div className="mobile-nav-links" onClick={e => e.stopPropagation()}>
           <Link to="/dashboard/overview" onClick={() => setMobileMenuOpen(false)}>Overview</Link>
           <Link to="/dashboard/demographics" onClick={() => setMobileMenuOpen(false)}>Demographics</Link>
           <Link to="/dashboard/geography" onClick={() => setMobileMenuOpen(false)}>Geography</Link>
           <Link to="/dashboard/employment" onClick={() => setMobileMenuOpen(false)}>Employment</Link>
-          
-          {/* Admin-only pages */}
           {(role === 'admin' || role === 'superadmin') && (
             <>
               <Link to="/dashboard/members" onClick={() => setMobileMenuOpen(false)}>All Members</Link>
               <Link to="/dashboard/analytics" onClick={() => setMobileMenuOpen(false)}>Analytics</Link>
             </>
           )}
-          
-          {/* Super admin only pages */}
           {role === 'superadmin' && (
             <Link to="/dashboard/user-management" onClick={() => setMobileMenuOpen(false)}>User Management</Link>
           )}
         </div>
       </div>
-      
-      {/* Password Change Modal */}
+
+      {/* Password Change Modal (hidden on mobile) */}
       <ChangePassword 
         visible={showPasswordModal} 
         onCancel={() => setShowPasswordModal(false)} 

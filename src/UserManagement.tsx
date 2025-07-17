@@ -206,10 +206,23 @@ const UserManagement: React.FC = () => {
         return;
       }
 
-      // Call Firebase service to update password
-      await firebaseService.updateUserPassword(changingPasswordFor.uid, values.newPassword);
+      // Check if trying to change current user's password
+      if (changingPasswordFor.uid === currentUser?.uid) {
+        message.info('To change your own password, please use the "Change My Password" option in the navigation menu.');
+        setPasswordModalVisible(false);
+        setChangingPasswordFor(null);
+        passwordForm.resetFields();
+        return;
+      }
+
+      // For changing other users' passwords, we need the Admin SDK
+      // For now, show a message about the limitation
+      message.warning(
+        'Password change for other users requires Firebase Admin SDK. ' +
+        'This feature is currently limited to changing your own password. ' +
+        'Please contact the system administrator to change other users\' passwords.'
+      );
       
-      message.success('Password updated successfully');
       setPasswordModalVisible(false);
       setChangingPasswordFor(null);
       passwordForm.resetFields();
@@ -299,7 +312,8 @@ const UserManagement: React.FC = () => {
             icon={<KeyOutlined />}
             size="small"
             onClick={() => openPasswordModal(record)}
-            title="Change Password"
+            title={record.uid === currentUser?.uid ? "Use 'Change My Password' in navigation" : "Password change requires Admin SDK"}
+            disabled={record.uid === currentUser?.uid}
           >
             Password
           </Button>
@@ -664,11 +678,40 @@ const UserManagement: React.FC = () => {
         footer={null}
         width={500}
       >
-        <Form
-          form={passwordForm}
-          layout="vertical"
-          onFinish={handlePasswordChange}
-        >
+        {changingPasswordFor?.uid === currentUser?.uid ? (
+          <div style={{ textAlign: 'center', padding: '20px' }}>
+            <p>To change your own password, please use the "Change My Password" option in the navigation menu.</p>
+            <Button 
+              type="primary" 
+              onClick={() => {
+                setPasswordModalVisible(false);
+                setChangingPasswordFor(null);
+                passwordForm.resetFields();
+              }}
+              style={{ background: '#dc2626', borderColor: '#dc2626' }}
+            >
+              Close
+            </Button>
+          </div>
+        ) : (
+          <div>
+            <div style={{ 
+              background: '#fff7e6', 
+              border: '1px solid #ffd591', 
+              borderRadius: '6px', 
+              padding: '12px', 
+              marginBottom: '16px' 
+            }}>
+              <p style={{ margin: 0, color: '#d46b08' }}>
+                <strong>Note:</strong> Password changes for other users require Firebase Admin SDK. 
+                This feature is currently limited to changing your own password.
+              </p>
+            </div>
+            <Form
+              form={passwordForm}
+              layout="vertical"
+              onFinish={handlePasswordChange}
+            >
           <Form.Item
             name="newPassword"
             label="New Password"
@@ -713,6 +756,8 @@ const UserManagement: React.FC = () => {
             </Space>
           </Form.Item>
         </Form>
+          </div>
+        )}
       </Modal>
     </div>
   );

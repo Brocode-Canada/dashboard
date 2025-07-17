@@ -3,6 +3,7 @@ html, body, #root {
   min-height: 100vh;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
 /* Dashboard Styles - Red Theme */
@@ -16,6 +17,8 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  width: 100vw;
+  min-height: 100vh;
 }
 
 .dashboard {
@@ -120,17 +123,21 @@ body {
   width: 100vw;
   max-width: 100vw;
   margin: 0;
+  min-height: calc(100vh - 120px); /* Account for navigation */
 }
 
 .page {
   background: white;
   border-radius: 0;
-  padding: 2rem 2vw;
+  padding: 1.5rem 1rem;
   box-shadow: none;
-  margin-bottom: 0;
+  margin: 0;
   width: 100vw;
   max-width: 100vw;
   border: none;
+  min-height: calc(100vh - 120px); /* Full viewport height minus navigation */
+  display: flex;
+  flex-direction: column;
 }
 
 .page h1 {
@@ -159,15 +166,15 @@ body {
 /* Stats Grid */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
 
 .stat-card {
   background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
-  padding: 1.5rem;
-  border-radius: 16px;
+  padding: 1.25rem;
+  border-radius: 12px;
   text-align: center;
   border: 2px solid #fecaca;
   transition: all 0.3s ease;
@@ -175,20 +182,20 @@ body {
 }
 
 .stat-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(220, 38, 38, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.15);
   border-color: #dc2626;
 }
 
 .stat-card h3 {
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.75rem 0;
   color: #b91c1c;
-  font-size: clamp(0.9rem, 2vw, 1rem);
+  font-size: clamp(0.85rem, 1.8vw, 0.95rem);
   font-weight: 600;
 }
 
 .stat-number {
-  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
   font-weight: 800;
   color: #dc2626;
   margin: 0;
@@ -198,28 +205,32 @@ body {
 /* Charts */
 .charts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
   margin-bottom: 1.5rem;
+  flex: 1;
 }
 
 .chart-card {
   background: white;
-  padding: 1.5rem;
-  border-radius: 16px;
+  padding: 1.25rem;
+  border-radius: 12px;
   border: 2px solid #fecaca;
-  box-shadow: 0 8px 24px rgba(220, 38, 38, 0.1);
+  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.1);
   transition: all 0.3s ease;
-  min-height: 400px;
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
 }
 
 .chart-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(220, 38, 38, 0.15);
+  box-shadow: 0 10px 28px rgba(220, 38, 38, 0.15);
 }
 
 .chart-card .recharts-wrapper {
   background: white;
+  flex: 1;
 }
 
 .chart-card .recharts-bar-rectangle {
@@ -228,17 +239,18 @@ body {
 
 .chart-container {
   background: white;
-  padding: 1.5rem;
-  border-radius: 16px;
+  padding: 1.25rem;
+  border-radius: 12px;
   border: 2px solid #fecaca;
-  box-shadow: 0 8px 24px rgba(220, 38, 38, 0.1);
+  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.1);
   margin-bottom: 1.5rem;
   transition: all 0.3s ease;
+  flex: 1;
 }
 
 .chart-container:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(220, 38, 38, 0.15);
+  box-shadow: 0 10px 28px rgba(220, 38, 38, 0.15);
 }
 
 /* Employment Stats */
@@ -629,7 +641,7 @@ body {
   }
   /* General Layout */
   .dashboard-header {
-    padding: 1rem 0.75rem;
+    padding: 0.75rem 0.5rem;
   }
   
   .nav-bar {
@@ -640,56 +652,80 @@ body {
   
   .nav-button {
     padding: 0.5rem 0.75rem;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     min-width: auto;
     flex: 1;
-    min-width: 80px;
+    min-width: 70px;
   }
   
   .dashboard-main {
-    padding: 0.5rem;
+    padding: 0;
+    min-height: calc(100vh - 100px);
   }
   
   .page {
-    padding: 1rem 0.75rem;
-    border-radius: 8px;
+    padding: 0.75rem 0.5rem;
+    border-radius: 0;
     margin: 0;
     width: 100vw;
     max-width: 100vw;
+    min-height: calc(100vh - 100px);
+  }
+  
+  .page h1 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+  }
+  
+  .page h2 {
+    font-size: 1.1rem;
+    margin: 1rem 0 0.75rem 0;
+  }
+  
+  .page h3 {
+    font-size: 0.95rem;
+    margin: 0.75rem 0;
   }
   
   /* Stats Grid */
   .stats-grid {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.5rem;
   }
   
   .stat-card {
-    padding: 1rem;
+    padding: 0.75rem;
   }
   
   .stat-card h3 {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     margin-bottom: 0.5rem;
   }
   
   .stat-number {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
   
   /* Charts Grid */
   .charts-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 0.75rem;
   }
   
   .chart-card {
-    padding: 1rem;
+    padding: 0.75rem;
+    min-height: 280px;
   }
   
   .chart-card h3 {
-    font-size: 1rem;
-    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .chart-container {
+    padding: 0.75rem;
+    min-height: 320px;
   }
   
   /* Employment Stats */
@@ -776,7 +812,7 @@ body {
   
   .nav-header {
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.75rem;
     align-items: center;
   }
   
@@ -787,12 +823,12 @@ body {
   }
   
   .header-logo-title h1 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     margin: 0;
   }
   
   .admin-dashboard-title {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     margin: 0;
   }
   
@@ -803,19 +839,19 @@ body {
   }
   
   .user-info span {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     padding: 0.25rem 0.5rem;
   }
   
   .nav-links {
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.4rem;
     justify-content: center;
   }
   
   .nav-links a {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.8rem;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.75rem;
     min-width: auto;
     flex: 1;
     text-align: center;
@@ -892,24 +928,24 @@ body {
   }
   
   .ant-table {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
   
   .ant-table-thead > tr > th {
-    padding: 0.5rem 0.25rem;
-    font-size: 0.75rem;
+    padding: 0.4rem 0.2rem;
+    font-size: 0.7rem;
   }
   
   .ant-table-tbody > tr > td {
-    padding: 0.5rem 0.25rem;
-    font-size: 0.75rem;
+    padding: 0.4rem 0.2rem;
+    font-size: 0.7rem;
   }
   
   /* Dark Mode Toggle */
   .dark-mode-toggle {
-    width: 40px;
-    height: 40px;
-    font-size: 1rem;
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
   }
   
   /* Mobile-specific improvements */
@@ -924,18 +960,18 @@ body {
   }
   
   .ant-btn {
-    min-height: 44px;
-    font-size: 0.9rem;
+    min-height: 40px;
+    font-size: 0.85rem;
   }
   
   .ant-input {
-    font-size: 0.9rem;
-    min-height: 44px;
+    font-size: 0.85rem;
+    min-height: 40px;
   }
   
   .ant-input-password {
-    font-size: 0.9rem;
-    min-height: 44px;
+    font-size: 0.85rem;
+    min-height: 40px;
   }
   
   /* Improve modal on mobile */

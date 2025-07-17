@@ -160,9 +160,6 @@ export const Navigation: React.FC = () => {
         {/* Admin-only pages - only show for admin roles */}
         {(role === 'admin' || role === 'moderator' || role === 'superadmin') && (
           <>
-            <span style={{ color: '#9ca3af', fontSize: '0.9rem', padding: '0.5rem 1rem', borderLeft: '1px solid #e5e7eb' }}>
-              🔐 Admin Features (Role: {role})
-            </span>
             <Link to="/dashboard/members">All Members</Link>
             <Link to="/dashboard/analytics">Analytics</Link>
           </>
@@ -173,10 +170,7 @@ export const Navigation: React.FC = () => {
           <Link to="/dashboard/user-management">User Management</Link>
         )}
         
-        {/* Debug info - remove this later */}
-        <span style={{ color: '#6b7280', fontSize: '0.8rem', padding: '0.5rem 1rem', borderLeft: '1px solid #e5e7eb' }}>
-          Debug: {user?.email} ({role})
-        </span>
+
       </div>
       
       {/* Password Change Modal */}

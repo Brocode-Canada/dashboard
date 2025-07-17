@@ -3,6 +3,8 @@ import { Modal, Form, Input, Button, Space, message } from 'antd';
 import { KeyOutlined } from '@ant-design/icons';
 import { firebaseService } from '../services/firebaseService';
 import { useAuth } from '../AuthContext';
+import { reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth';
+import { auth } from '../firebase';
 
 interface ChangePasswordProps {
   visible: boolean;
@@ -32,13 +34,38 @@ export const ChangePassword: React.FC<ChangePasswordProps> = ({ visible, onCance
         return;
       }
 
-      // For now, we can only change the current user's password
-      // This is a limitation of Firebase Auth client SDK
-      await firebaseService.updateUserPassword(user.uid, values.newPassword);
-      
-      message.success('Password updated successfully');
-      form.resetFields();
-      onCancel();
+      const currentUser = auth.currentUser;
+      if (!currentUser) {
+        message.error('No user is currently signed in');
+        return;
+      }
+
+      // Re-authenticate the user before changing password
+      const credential = EmailAuthProvider.credential(
+        currentUser.email!,
+        values.currentPassword
+      );
+
+      try {
+        // Re-authenticate the user
+        await reauthenticateWithCredential(currentUser, credential);
+        
+        // Now update the password
+        await firebaseService.updateUserPassword(user.uid, values.newPassword);
+        
+        message.success('Password updated successfully');
+        form.resetFields();
+        onCancel();
+      } catch (reauthError: any) {
+        if (reauthError.code === 'auth/wrong-password') {
+          message.error('Current password is incorrect');
+        } else if (reauthError.code === 'auth/user-mismatch') {
+          message.error('Current password is incorrect');
+        } else {
+          console.error('Re-authentication error:', reauthError);
+          message.error('Failed to verify current password. Please try again.');
+        }
+      }
     } catch (error) {
       console.error('Failed to update password:', error);
       const errorMessage = error instanceof Error ? error.message : 'Failed to update password';

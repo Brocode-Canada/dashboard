@@ -289,10 +289,6 @@ export class FirebaseService {
 
   async updateUserPassword(uid: string, newPassword: string): Promise<void> {
     try {
-      // Note: This requires the Firebase Admin SDK for server-side password updates
-      // For client-side, we can only update the current user's password
-      // This is a limitation of Firebase Auth client SDK
-      
       // Get the current user
       const currentUser = auth.currentUser;
       if (!currentUser) {
@@ -302,6 +298,7 @@ export class FirebaseService {
       // Check if the current user is trying to update their own password
       if (currentUser.uid === uid) {
         // Update current user's password
+        // Note: User should be re-authenticated before calling this method
         await updatePassword(currentUser, newPassword);
       } else {
         // For updating other users' passwords, we need the Admin SDK

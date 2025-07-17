@@ -254,31 +254,31 @@ const CSVImport: React.FC = () => {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      render: (text: string) => <span style={{ color: isDarkMode ? '#e2e8f0' : '#1f2937' }}>{text}</span>
+      render: (text: string) => <span style={{ color: '#1f2937' }}>{text}</span>
     },
     {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
-      render: (text: string) => <span style={{ color: isDarkMode ? '#e2e8f0' : '#1f2937' }}>{text}</span>
+      render: (text: string) => <span style={{ color: '#1f2937' }}>{text}</span>
     },
     {
       title: 'Phone',
       dataIndex: 'phone_number',
       key: 'phone_number',
-      render: (text: string) => <span style={{ color: isDarkMode ? '#e2e8f0' : '#1f2937' }}>{text || '-'}</span>
+      render: (text: string) => <span style={{ color: '#1f2937' }}>{text || '-'}</span>
     },
     {
       title: 'City',
       dataIndex: 'City & Province?',
       key: 'city',
-      render: (text: string) => <span style={{ color: isDarkMode ? '#e2e8f0' : '#1f2937' }}>{text || '-'}</span>
+      render: (text: string) => <span style={{ color: '#1f2937' }}>{text || '-'}</span>
     },
     {
       title: 'Occupation',
       dataIndex: 'Occupation / Job Title?',
       key: 'occupation',
-      render: (text: string) => <span style={{ color: isDarkMode ? '#e2e8f0' : '#1f2937' }}>{text || '-'}</span>
+      render: (text: string) => <span style={{ color: '#1f2937' }}>{text || '-'}</span>
     }
   ];
 
@@ -287,7 +287,7 @@ const CSVImport: React.FC = () => {
   return (
     <div>
       <h3 style={{
-        color: isDarkMode ? '#f8fafc' : '#dc2626',
+        color: '#dc2626',
         fontSize: '1.2rem',
         fontWeight: '600',
         marginBottom: '1rem',
@@ -350,8 +350,8 @@ const CSVImport: React.FC = () => {
           onClick={() => fileInputRef.current?.click()}
           disabled={importing}
           style={{
-            background: isDarkMode ? '#8b5cf6' : '#dc2626',
-            borderColor: isDarkMode ? '#8b5cf6' : '#dc2626',
+            background: '#dc2626',
+            borderColor: '#dc2626',
             marginRight: '0.5rem'
           }}
         >
@@ -370,15 +370,15 @@ const CSVImport: React.FC = () => {
           }}
           style={{
             marginRight: '0.5rem',
-            borderColor: isDarkMode ? '#8b5cf6' : '#dc2626',
-            color: isDarkMode ? '#8b5cf6' : '#dc2626'
+            borderColor: '#dc2626',
+            color: '#dc2626'
           }}
         >
           Download Template
         </Button>
 
         {fileList.length > 0 && (
-          <span style={{ color: isDarkMode ? '#e2e8f0' : '#374151' }}>
+          <span style={{ color: '#374151' }}>
             Selected: {fileList[0].name}
           </span>
         )}
@@ -389,9 +389,9 @@ const CSVImport: React.FC = () => {
           <Progress
             percent={Math.round(progress)}
             status="active"
-            strokeColor={isDarkMode ? '#8b5cf6' : '#dc2626'}
+            strokeColor={'#dc2626'}
           />
-          <p style={{ color: isDarkMode ? '#e2e8f0' : '#374151', marginTop: '0.5rem' }}>
+          <p style={{ color: '#374151', marginTop: '0.5rem' }}>
             Importing members... {Math.round(progress)}%
           </p>
         </div>
@@ -411,8 +411,8 @@ const CSVImport: React.FC = () => {
             type="primary"
             onClick={handleImport}
             style={{
-              background: isDarkMode ? '#8b5cf6' : '#dc2626',
-              borderColor: isDarkMode ? '#8b5cf6' : '#dc2626'
+              background: '#dc2626',
+              borderColor: '#dc2626'
             }}
           >
             Import {previewData.length} Members
@@ -420,7 +420,7 @@ const CSVImport: React.FC = () => {
         ]}
         width={800}
       >
-        <p style={{ marginBottom: '1rem', color: isDarkMode ? '#e2e8f0' : '#374151' }}>
+        <p style={{ marginBottom: '1rem', color: '#374151' }}>
           Preview of first 5 rows from your CSV file:
         </p>
         <Table
@@ -460,13 +460,13 @@ const CSVImport: React.FC = () => {
 
             {importResult.errors.length > 0 && (
               <div>
-                <h4 style={{ color: isDarkMode ? '#f8fafc' : '#1f2937', marginBottom: '0.5rem' }}>
+                <h4 style={{ color: '#1f2937', marginBottom: '0.5rem' }}>
                   Errors:
                 </h4>
                 <div style={{
                   maxHeight: '200px',
                   overflowY: 'auto',
-                  background: isDarkMode ? '#2d2d44' : '#f9fafb',
+                  background: '#f9fafb',
                   padding: '0.5rem',
                   borderRadius: '6px'
                 }}>

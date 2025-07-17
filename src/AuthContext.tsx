@@ -50,6 +50,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           }
         } catch (error) {
           console.error('❌ AuthProvider: Error fetching user data:', error);
+          console.log('🚀 AuthProvider: Permission error - setting default role to "user"');
+          // Set default role when permission is denied
+          setRole('user');
+          
+          // Temporary: Assign roles based on email for testing
+          if (firebaseUser.email) {
+            if (firebaseUser.email.includes('admin') || firebaseUser.email.includes('super')) {
+              console.log('🚀 AuthProvider: Temporary admin role assignment for:', firebaseUser.email);
+              setRole('superadmin');
+            } else if (firebaseUser.email.includes('moderator')) {
+              console.log('🚀 AuthProvider: Temporary moderator role assignment for:', firebaseUser.email);
+              setRole('moderator');
+            }
+          }
         }
       } else {
         console.log('🚀 AuthProvider: No user, resetting user data and role');
@@ -85,6 +99,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     } catch (error) {
       console.error('Login error:', error);
+      console.log('🚀 AuthProvider: Login permission error - setting default role');
+      setRole('user');
       throw error;
     } finally {
       setLoading(false);

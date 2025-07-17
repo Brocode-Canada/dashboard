@@ -4,7 +4,7 @@ import { useRoleAuth } from '../hooks/useRoleAuth';
 
 export const UserProfile: React.FC = () => {
   const { user, userData, signOut } = useAuth();
-  const { userRole, isAdmin, isModerator } = useRoleAuth();
+  const { userRole, isAdmin } = useRoleAuth();
   const [isSigningOut, setIsSigningOut] = useState(false);
 
   const handleSignOut = async () => {
@@ -19,14 +19,12 @@ export const UserProfile: React.FC = () => {
   };
 
   const getRoleBadgeColor = () => {
-    if (isAdmin) return 'bg-red-100 text-red-800';
-    if (isModerator) return 'bg-yellow-100 text-yellow-800';
-    return 'bg-green-100 text-green-800';
+    if (isAdmin) return 'bg-blue-100 text-blue-800';
+    return 'bg-gray-100 text-gray-800';
   };
 
   const getRoleDisplayName = () => {
-    if (isAdmin) return 'Administrator';
-    if (isModerator) return 'Moderator';
+    if (isAdmin) return 'Admin';
     return 'User';
   };
 

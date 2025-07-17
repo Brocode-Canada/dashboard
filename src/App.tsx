@@ -12,10 +12,7 @@ import UserManagement from './UserManagement';
 import MemberDetails from './MemberDetails';
 import CSVImport from './components/CSVImport';
 import { Navigation } from './components/Navigation';
-
-// import { AdvancedAnalytics } from './components/AdvancedAnalytics';
-
-type UserRole = 'superadmin' | 'admin' | 'user';
+import type { UserRole } from './types/auth';
 
 const COLORS = ['#dc2626', '#b91c1c', '#ef4444', '#f87171', '#fca5a5', '#fecaca', '#fef2f2', '#fee2e2', '#fecaca', '#fca5a5'];
 

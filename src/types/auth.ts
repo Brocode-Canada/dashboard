@@ -1,7 +1,7 @@
 import type { User as FirebaseUser } from 'firebase/auth';
 import type { User as FirebaseUserData } from '../services/firebaseService';
 
-export type UserRole = 'superadmin' | 'admin' | 'moderator' | 'user';
+export type UserRole = 'superadmin' | 'admin' | 'user';
 
 export type Permission = 'canManageUsers' | 'canViewAnalytics' | 'canEditContent';
 

@@ -4,7 +4,7 @@ import { useRoleAuth } from '../hooks/useRoleAuth';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  requiredRole?: 'admin' | 'moderator' | 'user';
+  requiredRole?: 'admin' | 'user';
   requiredPermission?: 'canManageUsers' | 'canViewAnalytics' | 'canEditContent';
   fallbackPath?: string;
 }
@@ -32,7 +32,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   // Check role requirement
   if (requiredRole) {
-    const roleHierarchy = { user: 1, moderator: 2, admin: 3, superadmin: 4 };
+    const roleHierarchy = { user: 1, admin: 2, superadmin: 3 };
     const userRoleLevel = roleHierarchy[userRole as keyof typeof roleHierarchy] || 0;
     const requiredRoleLevel = roleHierarchy[requiredRole];
 

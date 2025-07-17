@@ -42,9 +42,8 @@ export const UnauthorizedPage: React.FC = () => {
               </h3>
               <div className="flex justify-center">
                 <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                  userRole === 'admin' ? 'bg-red-100 text-red-800' :
-                  userRole === 'moderator' ? 'bg-yellow-100 text-yellow-800' :
-                  userRole === 'user' ? 'bg-green-100 text-green-800' :
+                  userRole === 'admin' ? 'bg-blue-100 text-blue-800' :
+                  userRole === 'user' ? 'bg-gray-100 text-gray-800' :
                   'bg-gray-100 text-gray-800'
                 }`}>
                   {userRole ? userRole.charAt(0).toUpperCase() + userRole.slice(1) : 'Guest'}

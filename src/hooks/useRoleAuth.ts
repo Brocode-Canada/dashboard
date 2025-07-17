@@ -32,9 +32,8 @@ export const useRoleAuth = (): UseRoleAuthReturn => {
     return userData.permissions[permission] || false;
   };
 
-  const isSuperadmin = userRole === 'superadmin';
   const isAdmin = userRole === 'admin';
-  const isModerator = userRole === 'moderator';
+  const isSuperAdmin = userRole === 'superadmin';
   const isUser = userRole === 'user';
 
   return {
@@ -42,9 +41,9 @@ export const useRoleAuth = (): UseRoleAuthReturn => {
     userRole,
     userData,
     hasPermission,
-    isSuperadmin,
+    isSuperadmin: isSuperAdmin,
     isAdmin,
-    isModerator,
+    isModerator: false, // Removed as per edit hint
     isUser,
     loading
   };

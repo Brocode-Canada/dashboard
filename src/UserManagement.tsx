@@ -143,7 +143,7 @@ const UserManagement: React.FC = () => {
         firstName: values.firstName,
         lastName: values.lastName,
         phoneNumber: values.phoneNumber,
-        role: values.role as 'superadmin' | 'admin' | 'moderator' | 'user',
+        role: values.role as 'superadmin' | 'admin' | 'user',
         status: values.status as 'active' | 'inactive' | 'suspended',
         metadata: {
           city: values.city,
@@ -179,7 +179,7 @@ const UserManagement: React.FC = () => {
         firstName: values.firstName,
         lastName: values.lastName,
         phoneNumber: values.phoneNumber,
-        role: values.role as 'superadmin' | 'admin' | 'moderator' | 'user',
+        role: values.role as 'superadmin' | 'admin' | 'user',
         status: values.status as 'active' | 'inactive' | 'suspended',
         metadata: {
           city: values.city,

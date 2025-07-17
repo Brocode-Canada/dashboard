@@ -107,7 +107,7 @@ const MemberDetails: React.FC = () => {
         minHeight: '100vh',
         width: '100vw',
         maxWidth: '100vw',
-        background: isDarkMode ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%)' : 'linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%)',
+        background: 'linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%)',
         position: 'fixed',
         top: 0,
         left: 0,
@@ -125,7 +125,7 @@ const MemberDetails: React.FC = () => {
           marginBottom: '2rem'
         }}></div>
         <p style={{
-          color: isDarkMode ? '#e2e8f0' : '#dc2626',
+          color: '#dc2626',
           fontSize: '1.2rem',
           fontWeight: '600',
           margin: 0,
@@ -147,7 +147,7 @@ const MemberDetails: React.FC = () => {
         minHeight: '100vh',
         width: '100vw',
         maxWidth: '100vw',
-        background: isDarkMode ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%)' : 'linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%)',
+        background: 'linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%)',
         position: 'fixed',
         top: 0,
         left: 0,
@@ -156,7 +156,7 @@ const MemberDetails: React.FC = () => {
         zIndex: 9999
       }}>
         <p style={{ 
-          color: isDarkMode ? '#e2e8f0' : '#dc2626',
+          color: '#dc2626',
           fontSize: '1.2rem',
           marginBottom: '1rem',
           textAlign: 'center'
@@ -179,7 +179,7 @@ const MemberDetails: React.FC = () => {
       minHeight: '100vh',
       width: '100vw',
       maxWidth: '100vw',
-      background: isDarkMode ? 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%)' : 'linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%)',
+      background: 'linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%)',
       padding: '2rem',
       margin: 0,
       borderRadius: 0
@@ -190,7 +190,7 @@ const MemberDetails: React.FC = () => {
       {/* Navigation Header */}
       <div style={{ marginBottom: '2rem' }}>
         <h1 style={{ 
-          color: isDarkMode ? '#f8fafc' : '#dc2626',
+          color: '#dc2626',
           fontSize: '2rem',
           fontWeight: '700',
           margin: 0,
@@ -209,7 +209,7 @@ const MemberDetails: React.FC = () => {
         <Card 
           title={
             <span style={{ 
-              color: isDarkMode ? '#f8fafc' : '#dc2626',
+              color: '#dc2626',
               fontSize: '1.3rem',
               fontWeight: '600'
             }}>
@@ -219,20 +219,20 @@ const MemberDetails: React.FC = () => {
           }
           style={{
             marginBottom: '1.5rem',
-            background: isDarkMode ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)' : 'white',
-            border: isDarkMode ? '2px solid #2d2d44' : '2px solid #fecaca',
+            background: 'white',
+            border: '2px solid #fecaca',
             borderRadius: '12px',
-            boxShadow: isDarkMode ? '0 4px 15px rgba(139, 92, 246, 0.1)' : '0 4px 12px rgba(220, 38, 38, 0.1)'
+            boxShadow: '0 4px 12px rgba(220, 38, 38, 0.1)'
           }}
         >
           <Descriptions 
             column={{ xxl: 3, xl: 3, lg: 2, md: 2, sm: 1, xs: 1 }}
             labelStyle={{ 
-              color: isDarkMode ? '#e2e8f0' : '#374151',
+              color: '#374151',
               fontWeight: '600'
             }}
             contentStyle={{ 
-              color: isDarkMode ? '#f8fafc' : '#1f2937'
+              color: '#1f2937'
             }}
           >
             <Descriptions.Item label="Full Name" span={2}>
@@ -267,7 +267,7 @@ const MemberDetails: React.FC = () => {
         <Card 
           title={
             <span style={{ 
-              color: isDarkMode ? '#f8fafc' : '#dc2626',
+              color: '#dc2626',
               fontSize: '1.3rem',
               fontWeight: '600'
             }}>
@@ -277,20 +277,20 @@ const MemberDetails: React.FC = () => {
           }
           style={{
             marginBottom: '1.5rem',
-            background: isDarkMode ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)' : 'white',
-            border: isDarkMode ? '2px solid #2d2d44' : '2px solid #fecaca',
+            background: 'white',
+            border: '2px solid #fecaca',
             borderRadius: '12px',
-            boxShadow: isDarkMode ? '0 4px 15px rgba(139, 92, 246, 0.1)' : '0 4px 12px rgba(220, 38, 38, 0.1)'
+            boxShadow: '0 4px 12px rgba(220, 38, 38, 0.1)'
           }}
         >
           <Descriptions 
             column={{ xxl: 2, xl: 2, lg: 2, md: 1, sm: 1, xs: 1 }}
             labelStyle={{ 
-              color: isDarkMode ? '#e2e8f0' : '#374151',
+              color: '#374151',
               fontWeight: '600'
             }}
             contentStyle={{ 
-              color: isDarkMode ? '#f8fafc' : '#1f2937'
+              color: '#1f2937'
             }}
           >
             <Descriptions.Item label="City & Province">
@@ -308,7 +308,7 @@ const MemberDetails: React.FC = () => {
         <Card 
           title={
             <span style={{ 
-              color: isDarkMode ? '#f8fafc' : '#dc2626',
+              color: '#dc2626',
               fontSize: '1.3rem',
               fontWeight: '600'
             }}>
@@ -318,20 +318,20 @@ const MemberDetails: React.FC = () => {
           }
           style={{
             marginBottom: '1.5rem',
-            background: isDarkMode ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)' : 'white',
-            border: isDarkMode ? '2px solid #2d2d44' : '2px solid #fecaca',
+            background: 'white',
+            border: '2px solid #fecaca',
             borderRadius: '12px',
-            boxShadow: isDarkMode ? '0 4px 15px rgba(139, 92, 246, 0.1)' : '0 4px 12px rgba(220, 38, 38, 0.1)'
+            boxShadow: '0 4px 12px rgba(220, 38, 38, 0.1)'
           }}
         >
           <Descriptions 
             column={{ xxl: 2, xl: 2, lg: 2, md: 1, sm: 1, xs: 1 }}
             labelStyle={{ 
-              color: isDarkMode ? '#e2e8f0' : '#374151',
+              color: '#374151',
               fontWeight: '600'
             }}
             contentStyle={{ 
-              color: isDarkMode ? '#f8fafc' : '#1f2937'
+              color: '#1f2937'
             }}
           >
             <Descriptions.Item label="Employment Status">
@@ -353,7 +353,7 @@ const MemberDetails: React.FC = () => {
         <Card 
           title={
             <span style={{ 
-              color: isDarkMode ? '#f8fafc' : '#dc2626',
+              color: '#dc2626',
               fontSize: '1.3rem',
               fontWeight: '600'
             }}>
@@ -363,20 +363,20 @@ const MemberDetails: React.FC = () => {
           }
           style={{
             marginBottom: '1.5rem',
-            background: isDarkMode ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)' : 'white',
-            border: isDarkMode ? '2px solid #2d2d44' : '2px solid #fecaca',
+            background: 'white',
+            border: '2px solid #fecaca',
             borderRadius: '12px',
-            boxShadow: isDarkMode ? '0 4px 15px rgba(139, 92, 246, 0.1)' : '0 4px 12px rgba(220, 38, 38, 0.1)'
+            boxShadow: '0 4px 12px rgba(220, 38, 38, 0.1)'
           }}
         >
           <Descriptions 
             column={1}
             labelStyle={{ 
-              color: isDarkMode ? '#e2e8f0' : '#374151',
+              color: '#374151',
               fontWeight: '600'
             }}
             contentStyle={{ 
-              color: isDarkMode ? '#f8fafc' : '#1f2937'
+              color: '#1f2937'
             }}
           >
             <Descriptions.Item label="How did you hear about BroCode Canada?">
@@ -385,7 +385,7 @@ const MemberDetails: React.FC = () => {
             <Descriptions.Item label="What do you hope to gain from joining BroCode Canada?">
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                 {getGainFromJoining(member['What do you hope to gain from joining Bro Code Canada? (Select all that apply) ']).split(', ').map((gain, index) => (
-                  <Tag key={index} color={isDarkMode ? 'purple' : 'red'}>
+                  <Tag key={index} color="red">
                     {gain}
                   </Tag>
                 ))}
